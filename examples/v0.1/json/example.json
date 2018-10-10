@@ -1,0 +1,100 @@
+{
+  "opendxlApi": "0.1",
+  "info": {
+    "version": "1.2.3",
+    "title": "ACME OpenDXL Solutions"
+  },
+  "solutions": [
+    {
+      "name": "ACME OpenDXL Solution One",
+      "services": [
+        {
+          "name": "ACME OpenDXL Service One",
+          "requests": [
+            {
+              "topic": "/opendxl-acme/service/service1/request1",
+              "description": "Description of OpenDXL ACME request topic 1",
+              "payload": {
+                "$ref": "#/definitions/request1Payload",
+                "example": {
+                  "responseCode": 5
+                }
+              },
+              "response": {
+                "payload": {
+                  "properties": {
+                    "responseCode": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "errorResponses": [
+                {
+                  "errorCode": 23,
+                  "description": "Unknown request"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "topic": "/opendxl-acme/event/event1",
+          "description": "Description of OpenDXL ACME event 1",
+          "payload": {
+            "properties": {
+              "eventNumber": {
+                "type": "number"
+              },
+              "eventDescription": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "eventNumber": 3,
+              "eventDescription": "Description for event number 3"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "topic": "/opendxl-acme/event/event2",
+      "description": "Description of OpenDXL ACME event 2",
+      "payload": {
+        "properties": {
+          "eventTopic": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "eventTopic": "This is the topic for event 2"
+        }
+      }
+    }
+  ],
+  "requests": [
+    {
+      "topic": "/opendxl-acme/request2",
+      "description": "Description of OpenDXL ACME request topic 2",
+      "payload": {
+        "type": "string",
+        "description": "Name of operation to perform for request2",
+        "example": "operation2"
+      }
+    }
+  ],
+  "definitions": {
+    "request1Payload": {
+      "properties": {
+        "requestOperation": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

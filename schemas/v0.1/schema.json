@@ -1,0 +1,175 @@
+{
+  "title": "OpenDXL API Schema",
+  "id": "https://opendxl.com/v1/schema.json#",
+  "$schema": "http://json-schema.org/schema#",
+  "required": [
+    "opendxlApi",
+    "info"
+  ],
+  "definitions": {
+    "message": {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/schema"
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        }
+      }
+    },
+    "response": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ]
+    },
+    "errorResponse": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/response"
+        }
+      ],
+      "properties": {
+        "errorCode": {
+          "type": "integer"
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ],
+      "required": [
+        "topic"
+      ],
+      "properties": {
+        "topic": {
+          "type": "string"
+        },
+        "response": {
+          "$ref": "#/definitions/response"
+        },
+        "errorResponses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/errorResponse"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "requests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/request"
+      },
+      "uniqueItems": true
+    },
+    "event": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ],
+      "required": [
+        "topic"
+      ],
+      "properties": {
+        "topic": {
+          "type": "string"
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/event"
+      },
+      "uniqueItems": true
+    },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "requests": {
+          "$ref": "#/definitions/requests"
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/service"
+      },
+      "uniqueItems": true
+    },
+    "solution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "events": {
+          "$ref": "#/definitions/events"
+        },
+        "services": {
+          "$ref": "#/definitions/services"
+        }
+      }
+    }
+  },
+  "properties": {
+    "opendxlApi": {
+      "type": "string",
+      "enum": [
+        "0.1"
+      ],
+      "description": "The OpenDXL API version of this document"
+    },
+    "info": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/info"
+    },
+    "events": {
+      "$ref": "#/definitions/events"
+    },
+    "requests": {
+      "$ref": "#/definitions/requests"
+    },
+    "services": {
+      "$ref": "#/definitions/services"
+    },
+    "solutions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/solution"
+      },
+      "uniqueItems": true
+    }
+  }
+}
