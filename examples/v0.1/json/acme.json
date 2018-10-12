@@ -1,0 +1,148 @@
+{
+  "opendxlApi": "0.1",
+  "info": {
+    "title": "ACME OpenDXL Solutions",
+    "version": "1.2.3",
+    "description": "Wily tools for capturing the most elusive threats",
+    "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solutions/",
+    "contact": {
+      "name": "Kai Otee",
+      "url": "https://www.opendxl.com/index.php?user/777-kaiotee/",
+      "email": "kai_otee@runningroads.com"
+    }
+  },
+  "solutions": [
+    {
+      "name": "ACME Anvil Solutions",
+      "services": [
+        {
+          "name": "ACME Anvil Service",
+          "requestTopics": [
+            "/opendxl-acme/service/anvil/alertregister",
+            "/opendxl-acme/service/anvil/requestdrop",
+            "/opendxl-acme/service/anvil/requestdropencrypted"
+          ]
+        }
+      ],
+      "eventTopics": [
+        "/opendxl-acme/event/runneralert"
+      ]
+    }
+  ],
+  "service":[
+    {}
+
+  ],
+  "events": [
+    {
+      "topic": "/opendxl-acme/event/runneralert",
+      "description": "Alerts registered subscribers of a new detected Runner",
+      "payload": {
+        "properties": {
+          "runnerID": {
+            "type": "integer"
+          },
+          "detectTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "runnerID": 3,
+          "detectTime": "2018-10-12T16:39:57-08:00"
+        }
+      }
+    }
+  ],
+  "requests": [
+    {
+      "topic": "/opendxl-acme/service/anvil/alertregister",
+      "description": "Registers client GUID with ACME Anvil Service for Runner Alert events. Empty payload, does not return a response.",
+      "payload": {
+        "$ref": "#/definitions/alertRegisterPayload"
+      },
+      "response": {},
+      "externalDocUrl": "https://acmesolutions.com/specs/opendxl/anvil_alert_register"
+    },
+    {
+      "topic": "/opendxl-acme/service/anvil/requestdrop",
+      "description": "Requests ACME Anvil Service data drop for the specified target file",
+      "payload": {
+        "$ref": "#/definitions/anvilRequestPayload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/anvilResponsePayload"
+        }
+      },
+      "errorResponses": [
+        {
+          "payload": {
+            "errorCode": 1,
+            "description": "Unknown target"
+          }
+        }
+      ],
+      "externalDocUrl": "https://acmesolutions.com/specs/opendxl/anvil_request"
+    },
+    {
+      "topic": "/opendxl-acme/service/anvil/requestdropencrypted",
+      "description": "Requests an encrypted ACME Anvil Service data drop for the specified target file",
+      "payload": {
+        "$ref": "#/definitions/anvilRequestPayloadEncrypted",
+        "example": {
+          "target": "roadRunner.exe"
+        }
+      },
+      "response": {
+        "payload": {
+          "properties": {
+            "responseCode": {
+              "description": "Raw encrypted data drop",
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "anvilRequestPayload": {
+      "properties": {
+        "targetID": {
+          "description": "Target ID for file data",
+          "type": "string"
+        }
+      },
+      "example": {
+        "target": "roadRunner.exe"
+      }
+    },
+    "anvilResponsePayload": {
+      "properties": {
+        "targetID": {
+          "description": "Target ID for file data",
+          "type": "string"
+        },
+        "accuracy": {
+          "description": "General measure of targeted Anvil data drop accuracy",
+          "type": "number",
+          "format": "float"
+        },
+        "velocity": {
+          "description": "The velocity of the target",
+          "type": "string"
+        }
+      },
+      "example": {
+        "targetID": "roadRunner.exe",
+        "accuracy": 99.99,
+        "velocity": "643 kph"
+      }
+    },
+    "alertRegisterPayload": {
+      "properties": {}
+    }
+  }
+}
