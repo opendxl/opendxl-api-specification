@@ -106,8 +106,11 @@
         "name": {
           "type": "string"
         },
-        "requests": {
-          "$ref": "#/definitions/requests"
+        "requestTopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -135,8 +138,11 @@
           "type": "string",
           "format": "uri"
         },
-        "events": {
-          "$ref": "#/definitions/events"
+        "eventTopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "services": {
           "$ref": "#/definitions/services"
