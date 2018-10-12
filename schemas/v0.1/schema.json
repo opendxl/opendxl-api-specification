@@ -7,38 +7,66 @@
     "info"
   ],
   "definitions": {
+    "otherField": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "example": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "message": {
       "type": "object",
+      "required": [
+        "payload"
+      ],
       "properties": {
         "payload": {
           "$ref": "http://swagger.io/v2/schema.json#/definitions/schema"
         },
+        "otherFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/otherField"
+          },
+          "uniqueItems": true
+        },
         "description": {
           "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "response": {
       "allOf": [
         {
           "$ref": "#/definitions/message"
         }
-      ]
+      ],
+      "additionalProperties": false
     },
     "errorResponse": {
       "allOf": [
         {
-          "$ref": "#/definitions/response"
+          "$ref": "#/definitions/message"
         }
       ],
       "properties": {
         "errorCode": {
           "type": "integer"
-        },
-        "description": {
-          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "request": {
       "type": "object",
@@ -51,6 +79,12 @@
         "topic"
       ],
       "properties": {
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+        },
+        "tags": {
+          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+        },
         "topic": {
           "type": "string"
         },
@@ -64,7 +98,8 @@
           },
           "uniqueItems": true
         }
-      }
+      },
+      "additionalProperties": false
     },
     "requests": {
       "type": "array",
@@ -84,10 +119,17 @@
         "topic"
       ],
       "properties": {
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+        },
+        "tags": {
+          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+        },
         "topic": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false
     },
     "events": {
       "type": "array",
@@ -98,7 +140,6 @@
     },
     "service": {
       "type": "object",
-      "additionalProperties": false,
       "required": [
         "name"
       ],
@@ -107,12 +148,16 @@
           "type": "string"
         },
         "requestTopics": {
-          "type": "array",
-          "items": {
+          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
             "type": "string"
           }
         }
-      }
+      },
+      "additionalProperties": false
     },
     "services": {
       "type": "array",
@@ -123,7 +168,6 @@
     },
     "solution": {
       "type": "object",
-      "additionalProperties": false,
       "required": [
         "name"
       ],
@@ -139,15 +183,13 @@
           "format": "uri"
         },
         "eventTopics": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
         },
         "services": {
           "$ref": "#/definitions/services"
         }
-      }
+      },
+      "additionalProperties": false
     }
   },
   "properties": {
@@ -160,6 +202,12 @@
     },
     "info": {
       "$ref": "http://swagger.io/v2/schema.json#/definitions/info"
+    },
+    "externalDocs": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+    },
+    "tags": {
+      "$ref": "http://swagger.io/v2/schema.json#/properties/tags"
     },
     "events": {
       "$ref": "#/definitions/events"
@@ -177,5 +225,6 @@
       },
       "uniqueItems": true
     }
-  }
+  },
+  "additionalProperties": false
 }

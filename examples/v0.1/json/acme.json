@@ -4,16 +4,22 @@
     "title": "ACME OpenDXL Solutions",
     "version": "1.2.3",
     "description": "Wily tools for capturing the most elusive threats",
-    "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solutions/",
     "contact": {
       "name": "Kai Otee",
       "url": "https://www.opendxl.com/index.php?user/777-kaiotee/",
       "email": "kai_otee@runningroads.com"
     }
   },
+  "tags": [
+    {
+      "name": "drop",
+      "description": "Drop-related APIs"
+    }
+  ],
   "solutions": [
     {
-      "name": "ACME Anvil Solutions",
+      "name": "ACME Anvil Solution",
+      "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solution/",
       "services": [
         {
           "name": "ACME Anvil Service",
@@ -21,17 +27,17 @@
             "/opendxl-acme/service/anvil/alertregister",
             "/opendxl-acme/service/anvil/requestdrop",
             "/opendxl-acme/service/anvil/requestdropencrypted"
-          ]
+          ],
+          "metadata": {
+            "anvilId": "12345",
+            "anvilType": "Sheet Metal"
+          }
         }
       ],
       "eventTopics": [
         "/opendxl-acme/event/runneralert"
       ]
     }
-  ],
-  "service":[
-    {}
-
   ],
   "events": [
     {
@@ -61,12 +67,16 @@
       "payload": {
         "$ref": "#/definitions/alertRegisterPayload"
       },
-      "response": {},
-      "externalDocUrl": "https://acmesolutions.com/specs/opendxl/anvil_alert_register"
+      "externalDocs": {
+        "url": "https://acmesolutions.com/specs/opendxl/anvil_alert_register"
+      }
     },
     {
       "topic": "/opendxl-acme/service/anvil/requestdrop",
       "description": "Requests ACME Anvil Service data drop for the specified target file",
+      "tags": [
+        "drop"
+      ],
       "payload": {
         "$ref": "#/definitions/anvilRequestPayload"
       },
@@ -77,33 +87,37 @@
       },
       "errorResponses": [
         {
+          "errorCode": 1,
           "payload": {
-            "errorCode": 1,
             "description": "Unknown target"
           }
         }
       ],
-      "externalDocUrl": "https://acmesolutions.com/specs/opendxl/anvil_request"
+      "externalDocs": {
+        "url": "https://acmesolutions.com/specs/opendxl/anvil_request"
+      }
     },
     {
       "topic": "/opendxl-acme/service/anvil/requestdropencrypted",
       "description": "Requests an encrypted ACME Anvil Service data drop for the specified target file",
       "payload": {
-        "$ref": "#/definitions/anvilRequestPayloadEncrypted",
-        "example": {
-          "target": "roadRunner.exe"
-        }
+        "type": "object"
       },
+      "tags": [
+        "drop"
+      ],
       "response": {
         "payload": {
-          "properties": {
-            "responseCode": {
-              "description": "Raw encrypted data drop",
-              "type": "string",
-              "format": "binary"
-            }
+          "description": "Raw encrypted data drop",
+          "type": "string",
+          "format": "binary"
+        },
+        "otherFields": [
+          {
+            "name": "publicKey",
+            "description": "Public key for the encrypted data drop"
           }
-        }
+        ]
       }
     }
   ],
@@ -116,7 +130,7 @@
         }
       },
       "example": {
-        "target": "roadRunner.exe"
+        "targetID": "roadRunner.exe"
       }
     },
     "anvilResponsePayload": {
