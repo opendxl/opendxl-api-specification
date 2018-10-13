@@ -17,10 +17,15 @@
     }
   ],
   "baseTopic": "/opendxl-acme",
-  "solutions": [
-    {
-      "name": "ACME Anvil Solution",
-      "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solution/",
+  "solutions": {
+    "ACME Anvil Solution": {
+      "info": {
+        "title": "ACME Anvil Solution",
+        "version": "4.5.6"
+      },
+      "externalDocs": {
+        "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solution/"
+      },
       "services": {
         "ACME Anvil Service": {
           "$ref": "#/services/ACME Anvil Service"
@@ -32,9 +37,16 @@
         }
       }
     }
-  ],
+  },
   "services": {
     "ACME Anvil Service": {
+      "info": {
+        "title": "ACME Anvil Service",
+        "version": "7.8.9"
+      },
+      "externalDocs": {
+        "url": "https://acme.github.io/acme-anvil-service/pydoc/acme-anvil-service.html"
+      },
       "requests": {
         "/service/anvil/alertregister": {
           "$ref": "#/requests/~1service~1anvil~1alertregister"
@@ -95,14 +107,11 @@
           "$ref": "#/definitions/anvilResponsePayload"
         }
       },
-      "errorResponses": [
-        {
-          "errorCode": 1,
-          "payload": {
-            "description": "Unknown target"
-          }
+      "errorResponses": {
+        "1": {
+          "description": "Unknown target"
         }
-      ],
+      },
       "externalDocs": {
         "url": "https://acmesolutions.com/specs/opendxl/anvil_request"
       }
