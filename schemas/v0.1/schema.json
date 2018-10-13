@@ -75,18 +75,12 @@
           "$ref": "#/definitions/message"
         }
       ],
-      "required": [
-        "topic"
-      ],
       "properties": {
         "externalDocs": {
           "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
         },
         "tags": {
           "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
-        },
-        "topic": {
-          "type": "string"
         },
         "response": {
           "$ref": "#/definitions/response"
@@ -102,11 +96,10 @@
       "additionalProperties": false
     },
     "requests": {
-      "type": "array",
-      "items": {
+      "type": "object",
+      "additionalProperties": {
         "$ref": "#/definitions/request"
-      },
-      "uniqueItems": true
+      }
     },
     "event": {
       "type": "object",
@@ -115,40 +108,40 @@
           "$ref": "#/definitions/message"
         }
       ],
-      "required": [
-        "topic"
-      ],
       "properties": {
         "externalDocs": {
           "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
         },
         "tags": {
           "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
-        },
-        "topic": {
-          "type": "string"
         }
       },
       "additionalProperties": false
     },
     "events": {
-      "type": "array",
-      "items": {
+      "type": "object",
+      "additionalProperties": {
         "$ref": "#/definitions/event"
-      },
-      "uniqueItems": true
+      }
     },
     "service": {
       "type": "object",
-      "required": [
-        "name"
-      ],
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "requestTopics": {
-          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+        "requests": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "$ref"
+            ],
+            "properties": {
+              "$ref": {
+                "type": "string",
+                "pattern": "#/requests/"
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "metadata": {
           "type": "object",
@@ -160,11 +153,10 @@
       "additionalProperties": false
     },
     "services": {
-      "type": "array",
-      "items": {
+      "type": "object",
+      "additionalProperties": {
         "$ref": "#/definitions/service"
-      },
-      "uniqueItems": true
+      }
     },
     "solution": {
       "type": "object",
@@ -182,11 +174,37 @@
           "type": "string",
           "format": "uri"
         },
-        "eventTopics": {
-          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+        "events": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "$ref"
+            ],
+            "properties": {
+              "$ref": {
+                "type": "string",
+                "pattern": "#/events/"
+              }
+            },
+            "additionalProperties": false
+          }
         },
         "services": {
-          "$ref": "#/definitions/services"
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "$ref"
+            ],
+            "properties": {
+              "$ref": {
+                "type": "string",
+                "pattern": "#/services/"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
       "additionalProperties": false
@@ -208,6 +226,9 @@
     },
     "tags": {
       "$ref": "http://swagger.io/v2/schema.json#/properties/tags"
+    },
+    "baseTopic": {
+      "type": "string"
     },
     "events": {
       "$ref": "#/definitions/events"

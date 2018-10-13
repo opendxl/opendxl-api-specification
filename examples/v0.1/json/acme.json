@@ -16,32 +16,44 @@
       "description": "Drop-related APIs"
     }
   ],
+  "baseTopic": "/opendxl-acme",
   "solutions": [
     {
       "name": "ACME Anvil Solution",
       "url": "https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solution/",
-      "services": [
-        {
-          "name": "ACME Anvil Service",
-          "requestTopics": [
-            "/opendxl-acme/service/anvil/alertregister",
-            "/opendxl-acme/service/anvil/requestdrop",
-            "/opendxl-acme/service/anvil/requestdropencrypted"
-          ],
-          "metadata": {
-            "anvilId": "12345",
-            "anvilType": "Sheet Metal"
-          }
+      "services": {
+        "ACME Anvil Service": {
+          "$ref": "#/services/ACME Anvil Service"
         }
-      ],
-      "eventTopics": [
-        "/opendxl-acme/event/runneralert"
-      ]
+      },
+      "events": {
+        "/event/runneralert": {
+          "$ref": "#/events/~1event~1runneralert"
+        }
+      }
     }
   ],
-  "events": [
-    {
-      "topic": "/opendxl-acme/event/runneralert",
+  "services": {
+    "ACME Anvil Service": {
+      "requests": {
+        "/service/anvil/alertregister": {
+          "$ref": "#/requests/~1service~1anvil~1alertregister"
+        },
+        "/service/anvil/requestdrop": {
+          "$ref": "#/requests/~1service~1anvil~1requestdrop"
+        },
+        "/service/anvil/requestdropencrypted": {
+          "$ref": "#/requests/~1service~1anvil~1requestdropencrypted"
+        }
+      },
+      "metadata": {
+        "anvilId": "12345",
+        "anvilType": "Sheet Metal"
+      }
+    }
+  },
+  "events": {
+    "/event/runneralert": {
       "description": "Alerts registered subscribers of a new detected Runner",
       "payload": {
         "properties": {
@@ -59,10 +71,9 @@
         }
       }
     }
-  ],
-  "requests": [
-    {
-      "topic": "/opendxl-acme/service/anvil/alertregister",
+  },
+  "requests": {
+    "/service/anvil/alertregister": {
       "description": "Registers client GUID with ACME Anvil Service for Runner Alert events. Empty payload, does not return a response.",
       "payload": {
         "$ref": "#/definitions/alertRegisterPayload"
@@ -71,8 +82,7 @@
         "url": "https://acmesolutions.com/specs/opendxl/anvil_alert_register"
       }
     },
-    {
-      "topic": "/opendxl-acme/service/anvil/requestdrop",
+    "/service/anvil/requestdrop": {
       "description": "Requests ACME Anvil Service data drop for the specified target file",
       "tags": [
         "drop"
@@ -97,8 +107,7 @@
         "url": "https://acmesolutions.com/specs/opendxl/anvil_request"
       }
     },
-    {
-      "topic": "/opendxl-acme/service/anvil/requestdropencrypted",
+    "/service/anvil/requestdropencrypted": {
       "description": "Requests an encrypted ACME Anvil Service data drop for the specified target file",
       "payload": {
         "type": "object"
@@ -120,7 +129,7 @@
         ]
       }
     }
-  ],
+  },
   "definitions": {
     "anvilRequestPayload": {
       "properties": {
