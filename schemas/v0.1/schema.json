@@ -1,18 +1,21 @@
 {
   "title": "OpenDXL API Schema",
-  "id": "https://opendxl.com/v1/schema.json#",
-  "$schema": "http://json-schema.org/schema#",
+  "id": "https://opendxl.com/v0.1/schema.json#",
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "required": [
     "opendxlApi",
     "info"
   ],
   "definitions": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "default": []
+    },
     "otherField": {
       "type": "object",
       "properties": {
-        "name": {
-          "type": "string"
-        },
         "description": {
           "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
         },
@@ -29,11 +32,25 @@
           "$ref": "http://swagger.io/v2/schema.json#/definitions/schema"
         },
         "otherFields": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/otherField"
+          "type": "object",
+          "properties": {
+            "$ref": {
+              "type": "string"
+            },
+            "properties": {
+              "additionalProperties": {
+                "$ref": "#/definitions/otherField"
+              }
+            },
+            "required": {
+              "$ref": "#/definitions/stringArray"
+            },
+            "example": {},
+            "externalDocs": {
+              "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+            }
           },
-          "uniqueItems": true
+          "additionalProperties": false
         },
         "description": {
           "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
@@ -61,7 +78,7 @@
       ],
       "properties": {
         "tags": {
-          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+          "$ref": "#/definitions/stringArray"
         },
         "response": {
           "$ref": "#/definitions/response"
@@ -93,7 +110,7 @@
       ],
       "properties": {
         "tags": {
-          "$ref": "http://json-schema.org/draft-04/schema#/definitions/stringArray"
+          "$ref": "#/definitions/stringArray"
         }
       },
       "additionalProperties": false

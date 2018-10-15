@@ -130,17 +130,19 @@
           "type": "string",
           "format": "binary"
         },
-        "otherFields": [
-          {
-            "name": "publicKey",
-            "description": "Public key for the encrypted data drop"
+        "otherFields": {
+          "properties": {
+            "publicKey": {
+              "description": "Public key for the encrypted data drop"
+            }
           }
-        ]
+        }
       }
     }
   },
   "definitions": {
     "anvilRequestPayload": {
+      "type": "object",
       "properties": {
         "targetID": {
           "description": "Target ID for file data",
@@ -152,6 +154,7 @@
       }
     },
     "anvilResponsePayload": {
+      "type": "object",
       "properties": {
         "targetID": {
           "description": "Target ID for file data",
@@ -174,6 +177,7 @@
       }
     },
     "alertRegisterPayload": {
+      "type": "object",
       "properties": {}
     }
   }
