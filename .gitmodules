@@ -1,0 +1,4 @@
+[submodule "openapi-spec"]
+	path = openapi-spec
+	url = https://github.com/OAI/OpenAPI-Specification.git
+	branch = master
