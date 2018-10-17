@@ -11,9 +11,9 @@ API for DXL-based solutions, including:
 * [Events](https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html#dxlclient.message.Event)
   that solutions send to a DXL fabric.
 * [Requests](https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html#dxlclient.message.Request)
-  which can be made to the solution through a DXL fabric (and the
+  which can be made to a service through a DXL fabric (and the
   corresponding [responses](https://opendxl.github.io/opendxl-client-python/pydoc/dxlclient.message.html#dxlclient.message.Response)
-  that the solution produces).
+  that the service produces).
 
 The OpenDXL API Specification is heavily inspired by the work done in the
 [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification) to
@@ -35,7 +35,7 @@ The draft version of the OpenDXL API Specification is
 
 ## Schemas
 
-[JSON schema](https://json-schema.org) documents which can be used for
+[JSON Schema](https://json-schema.org) documents which can be used for
 syntactic validation of an OpenDXL API document reside in the
 [schemas](schemas) directory. The schema for the latest specification version
 is [here](schemas/v0.1/schema.json).

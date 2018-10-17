@@ -1,5 +1,5 @@
 {
-  "opendxlApi": "0.1",
+  "openDxlApi": "0.1",
   "info": {
     "title": "DXL Broker",
     "version": "0.1",
