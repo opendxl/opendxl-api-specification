@@ -280,6 +280,9 @@
       "description": "Base topic to append to topics listed elsewhere in this document",
       "type": "string"
     },
+    "definitions": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/definitions"
+    },
     "events": {
       "$ref": "#/definitions/events"
     },
