@@ -138,6 +138,20 @@
         "$ref": "#/definitions/event"
       }
     },
+    "serviceMetadataItem": {
+      "type": "object",
+      "description": "An individual 'item' in a DXL service 'metadata' object. See 'metadata' in the 'service' property.",
+      "properties": {
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "example": {
+          "description": "Example value for this metadata item",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "service": {
       "description": "Information for a service registered with a DXL fabric",
       "type": "object",
@@ -167,11 +181,23 @@
           }
         },
         "metadata": {
-          "description": "A map containing additional metadata (key/value pairs) for the service",
+          "description": "Metadata which can be registered with the DXL service. The metadata is typically used to include information such as the versions for products that are exposing DXL services, etc.",
           "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
+          "properties": {
+            "properties": {
+              "description": "Map of metadata item names to corresponding descriptive information about the item",
+              "additionalProperties": {
+                "$ref": "#/definitions/serviceMetadataItem"
+              }
+            },
+            "example": {
+              "description": "Free-form example of the metadata object"
+            },
+            "externalDocs": {
+              "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

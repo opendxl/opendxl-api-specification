@@ -39,8 +39,14 @@ services:
       /service/anvil/requestdropencrypted:
         $ref: '#/requests/~1service~1anvil~1requestdropencrypted'
     metadata:
-      anvilId: "12345"
-      anvilType: Sheet Metal
+      properties:
+        anvilId:
+          description: Id for the anvils that this service manages
+        anvilType:
+          description: Type of anvils that this service manages
+      example:
+        anvilId: "12345"
+        anvilType: Sheet Metal
 events:
   /event/runneralert:
     description: Alerts registered subscribers of a new detected Runner
