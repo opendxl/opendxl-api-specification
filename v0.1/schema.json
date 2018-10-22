@@ -1,0 +1,304 @@
+{
+  "title": "OpenDXL API Schema",
+  "id": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "required": [
+    "openDxlApi",
+    "info"
+  ],
+  "definitions": {
+    "stringArray": {
+      "description": "Similar to the stringArray definition in JSON Schema Draft 4 but allows for the array to be empty",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "otherField": {
+      "type": "object",
+      "description": "An individual 'other field' in a DXL message. See 'otherFields' in the 'message' property.",
+      "properties": {
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "example": {
+          "description": "Example value for this 'other field'",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "message": {
+      "type": "object",
+      "description": "Common properties for all messages which can be sent on a DXL fabric",
+      "properties": {
+        "payload": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/schema"
+        },
+        "otherFields": {
+          "type": "object",
+          "description": "The 'other fields' which can appear in a DXL message. 'other fields' add 'header'-like name/value pairs without requiring modifications to be made to the payload.",
+          "properties": {
+            "$ref": {
+              "description": "Allows for an external definition of this 'otherFields' object. The referenced structure must be in the format of an 'otherFields' object",
+              "type": "string"
+            },
+            "properties": {
+              "description": "Map of 'other field' names to corresponding metadata for the 'otherFields' object",
+              "additionalProperties": {
+                "$ref": "#/definitions/otherField"
+              }
+            },
+            "required": {
+              "$ref": "#/definitions/stringArray"
+            },
+            "example": {
+              "description": "Free-form example of the 'otherFields' object"
+            },
+            "externalDocs": {
+              "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+            }
+          },
+          "additionalProperties": false
+        },
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+        }
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "description": "A 'response' message which can be sent in response to a 'request' message sent on a DXL fabric",
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ],
+      "additionalProperties": false
+    },
+    "request": {
+      "description": "A 'request' message which can be sent on a DXL fabric",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ],
+      "properties": {
+        "tags": {
+          "$ref": "#/definitions/stringArray"
+        },
+        "response": {
+          "$ref": "#/definitions/response"
+        },
+        "errorResponses": {
+          "description": "Map of integer-based error codes to corresponding 'response' objects. The map describes the possible DXL error response messages which can be returned for a failed request.",
+          "type": "object",
+          "patternProperties": {
+            "^-?[0-9]+$": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "requests": {
+      "description": "A map of DXL request topic names to corresponding 'request' objects",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/request"
+      }
+    },
+    "event": {
+      "description": "An event message which can be sent on a DXL fabric",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/message"
+        }
+      ],
+      "properties": {
+        "tags": {
+          "$ref": "#/definitions/stringArray"
+        }
+      },
+      "additionalProperties": false
+    },
+    "events": {
+      "description": "A map of DXL event topic names to corresponding 'event' objects",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/event"
+      }
+    },
+    "serviceMetadataItem": {
+      "type": "object",
+      "description": "An individual 'item' in a DXL service 'metadata' object. See 'metadata' in the 'service' property.",
+      "properties": {
+        "description": {
+          "$ref": "http://json-schema.org/draft-04/schema#/properties/description"
+        },
+        "example": {
+          "description": "Example value for this metadata item",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "service": {
+      "description": "Information for a service registered with a DXL fabric",
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/info"
+        },
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+        },
+        "requests": {
+          "description": "A map of DXL request topic names to corresponding request definitions under '#/requests' in this document",
+          "type": "object",
+          "additionalProperties": {
+            "allOf": [
+              {
+                "$ref": "http://swagger.io/v2/schema.json#/definitions/jsonReference"
+              },
+              {
+                "properties": {
+                  "$ref": {
+                    "pattern": "^#/requests/[^/]+"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "metadata": {
+          "description": "Metadata which can be registered with the DXL service. The metadata is typically used to include information such as the versions for products that are exposing DXL services, etc.",
+          "type": "object",
+          "properties": {
+            "properties": {
+              "description": "Map of metadata item names to corresponding descriptive information about the item",
+              "additionalProperties": {
+                "$ref": "#/definitions/serviceMetadataItem"
+              }
+            },
+            "example": {
+              "description": "Free-form example of the metadata object"
+            },
+            "externalDocs": {
+              "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "services": {
+      "description": "A map of DXL 'service type' strings to corresponding 'service' objects",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/service"
+      }
+    },
+    "solution": {
+      "description": "Information for an individual DXL solution",
+      "type": "object",
+      "properties": {
+        "info": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/info"
+        },
+        "externalDocs": {
+          "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+        },
+        "events": {
+          "description": "A map of DXL event topic names to corresponding event definitions under '#/events' in this document",
+          "type": "object",
+          "additionalProperties": {
+            "allOf": [
+              {
+                "$ref": "http://swagger.io/v2/schema.json#/definitions/jsonReference"
+              },
+              {
+                "properties": {
+                  "$ref": {
+                    "pattern": "^#/events/[^/]+"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "services": {
+          "description": "A map of DXL 'service type' strings to corresponding service definitions under '#/services' in this document",
+          "type": "object",
+          "additionalProperties": {
+            "allOf": [
+              {
+                "$ref": "http://swagger.io/v2/schema.json#/definitions/jsonReference"
+              },
+              {
+                "properties": {
+                  "$ref": {
+                    "pattern": "^#/services/[^/]+"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "openDxlApi": {
+      "description": "The OpenDXL API version of this document",
+      "type": "string",
+      "enum": [
+        "0.1"
+      ]
+    },
+    "info": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/info"
+    },
+    "externalDocs": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
+    },
+    "tags": {
+      "$ref": "http://swagger.io/v2/schema.json#/properties/tags"
+    },
+    "baseTopic": {
+      "description": "Base topic to append to topics listed elsewhere in this document",
+      "type": "string"
+    },
+    "definitions": {
+      "$ref": "http://swagger.io/v2/schema.json#/definitions/definitions"
+    },
+    "events": {
+      "$ref": "#/definitions/events"
+    },
+    "requests": {
+      "$ref": "#/definitions/requests"
+    },
+    "services": {
+      "$ref": "#/definitions/services"
+    },
+    "solutions": {
+      "description": "A map of DXL solution names to corresponding 'solution' objects",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/solution"
+      }
+    }
+  },
+  "additionalProperties": false
+}
