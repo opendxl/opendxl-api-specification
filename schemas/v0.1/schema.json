@@ -69,8 +69,7 @@
         "externalDocs": {
           "$ref": "http://swagger.io/v2/schema.json#/definitions/externalDocs"
         }
-      },
-      "additionalProperties": false
+      }
     },
     "response": {
       "description": "A 'response' message which can be sent in response to a 'request' message sent on a DXL fabric",
@@ -78,8 +77,7 @@
         {
           "$ref": "#/definitions/message"
         }
-      ],
-      "additionalProperties": false
+      ]
     },
     "request": {
       "description": "A 'request' message which can be sent on a DXL fabric",
@@ -87,27 +85,29 @@
       "allOf": [
         {
           "$ref": "#/definitions/message"
-        }
-      ],
-      "properties": {
-        "tags": {
-          "$ref": "#/definitions/stringArray"
         },
-        "response": {
-          "$ref": "#/definitions/response"
-        },
-        "errorResponses": {
-          "description": "Map of integer-based error codes to corresponding 'response' objects. The map describes the possible DXL error response messages which can be returned for a failed request.",
+        {
           "type": "object",
-          "patternProperties": {
-            "^-?[0-9]+$": {
+          "properties": {
+            "tags": {
+              "$ref": "#/definitions/stringArray"
+            },
+            "response": {
               "$ref": "#/definitions/response"
+            },
+            "errorResponses": {
+              "description": "Map of integer-based error codes to corresponding 'response' objects. The map describes the possible DXL error response messages which can be returned for a failed request.",
+              "type": "object",
+              "patternProperties": {
+                "^-?[0-9]+$": {
+                  "$ref": "#/definitions/response"
+                }
+              },
+              "additionalProperties": false
             }
-          },
-          "additionalProperties": false
+          }
         }
-      },
-      "additionalProperties": false
+      ]
     },
     "requests": {
       "description": "A map of DXL request topic names to corresponding 'request' objects",
@@ -122,14 +122,16 @@
       "allOf": [
         {
           "$ref": "#/definitions/message"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "tags": {
+              "$ref": "#/definitions/stringArray"
+            }
+          }
         }
-      ],
-      "properties": {
-        "tags": {
-          "$ref": "#/definitions/stringArray"
-        }
-      },
-      "additionalProperties": false
+      ]
     },
     "events": {
       "description": "A map of DXL event topic names to corresponding 'event' objects",
