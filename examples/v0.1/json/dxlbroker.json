@@ -85,7 +85,7 @@
           },
           "topics": {
             "description": "Topics",
-            "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+            "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
           }
         }
       },
@@ -416,7 +416,7 @@
             "type": "string"
           },
           "topics": {
-            "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+            "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
           }
         },
         "example": {
@@ -505,7 +505,7 @@
                   },
                   "unauthorizedChannels": {
                     "description": "Unauthorized channels for service",
-                    "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+                    "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
                   }
                 }
               }
@@ -588,11 +588,11 @@
       "properties": {
         "bridgeChildren": {
           "description": "Broker's child connections",
-          "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+          "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
         },
         "bridges": {
           "description": "Broker's connections",
-          "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+          "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
         },
         "connectionLimit": {
           "description": "Broker connection limit",
@@ -701,7 +701,7 @@
         },
         "certificates": {
           "description": "Service metadata",
-          "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+          "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
         },
         "clientGuid": {
           "description": "Client GUID",
@@ -728,7 +728,7 @@
         },
         "requestChannels": {
           "description": "Service request channels",
-          "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+          "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
         },
         "registrationTime": {
           "description": "Registration time (as seconds from epoch)",
@@ -744,7 +744,7 @@
         },
         "targetTenantGuids": {
           "description": "Target tenant GUIDs",
-          "$ref": "https://opendxl.com/v0.1/schema.json#/definitions/stringArray"
+          "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
         },
         "ttlMins": {
           "description": "Service Time to Live (in minutes)",
