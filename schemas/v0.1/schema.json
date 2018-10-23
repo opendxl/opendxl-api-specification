@@ -1,6 +1,6 @@
 {
   "title": "OpenDXL API Schema",
-  "id": "https://opendxl.com/v0.1/schema.json#",
+  "id": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "required": [
     "openDxlApi",
