@@ -13,53 +13,23 @@
       "externalDocs": {
         "url": "https://www.opendxl.com/filebase/index.php?file/76-opendxl-broker"
       },
-      "events": {
-        "/mcafee/event/dxl/brokerregistry/brokerstate": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1brokerstate"
-        },
-        "/mcafee/event/dxl/brokerregistry/brokerstatetopics": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1brokerstatetopics"
-        },
-        "/mcafee/event/dxl/brokerregistry/topicadded": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1topicadded"
-        },
-        "/mcafee/event/dxl/brokerregistry/topicremoved": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1topicremoved"
-        },
-        "/mcafee/event/dxl/clientregistry/connect": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1connect"
-        },
-        "/mcafee/event/dxl/clientregistry/disconnect": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1disconnect"
-        },
-        "/mcafee/event/dxl/dumpbrokerstate": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1dumpbrokerstate"
-        },
-        "/mcafee/event/dxl/dumpservicestate": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1dumpservicestate"
-        },
-        "/mcafee/event/dxl/eventsubscribernotfound": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1eventsubscribernotfound"
-        },
-        "/mcafee/event/dxl/fabricchange": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1fabricchange"
-        },
-        "/mcafee/event/dxl/revocation/list": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1revocation~1list"
-        },
-        "/mcafee/event/dxl/svcregistry/register": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1register"
-        },
-        "/mcafee/event/dxl/svcregistry/unregister": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1unregister"
-        },
-        "/mcafee/event/dxl/tenant/limit/exceeded": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1exceeded"
-        },
-        "/mcafee/event/dxl/tenant/limit/reset": {
-          "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1reset"
-        }
-      }
+      "events": [
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1brokerstate" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1brokerstatetopics" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1topicadded" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1topicremoved" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1connect" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1disconnect" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1dumpbrokerstate" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1dumpservicestate" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1eventsubscribernotfound" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1fabricchange" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1revocation~1list" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1register" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1unregister" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1exceeded" },
+        { "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1reset" }         
+      ]
     }
   },
   "events": {
@@ -90,7 +60,12 @@
         }
       },
       "otherFields": {
-        "$ref": "#/definitions/BrokerTopicOtherFields"
+        "changeCount": {
+          "description": "Change count related to topics"
+        },
+        "startTime": {
+          "description": "Broker start time (as seconds from epoch)"
+        }
       }
     },
     "/mcafee/event/dxl/brokerregistry/topicadded": {
@@ -646,21 +621,6 @@
           "description": "Broker version",
           "type": "string"
         }
-      }
-    },
-    "BrokerTopicOtherFields": {
-      "type": "object",
-      "properties": {
-        "changeCount": {
-          "description": "Change count related to topics"
-        },
-        "startTime": {
-          "description": "Broker start time (as seconds from epoch)"
-        }
-      },
-      "example": {
-        "changeCount": "15",
-        "startTime": "1539374521"
       }
     },
     "IpeHealthPayloadProperties": {

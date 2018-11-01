@@ -1,4 +1,6 @@
-openDxlApi: "0.1"
+openDxlApi: '0.1'
+externalDocs:
+  url: https://www.opendxl.com/index.php?user/777-kaiotee/
 info:
   title: ACME OpenDXL Solutions
   version: 1.2.3
@@ -7,48 +9,39 @@ info:
     name: Kai Otee
     url: https://www.opendxl.com/index.php?user/777-kaiotee/
     email: kai_otee@runningroads.com
-tags:
-  - name: drop
-    description: Drop-related APIs
-baseTopic: /opendxl-acme
 solutions:
   ACME Anvil Solution:
     info:
       title: ACME Anvil Solution
       version: 4.5.6
+      description: The ACME Anvil Solution
     externalDocs:
       url: https://www.opendxl.com/filebase/index.php?file/999-acme-dxl-solution/
     services:
-      ACME Anvil Service:
-        $ref: '#/services/ACME Anvil Service'
+    - "$ref": "#/services/ACME Anvil Service"
     events:
-      /event/runneralert:
-        $ref: '#/events/~1event~1runneralert'
+    - "$ref": "#/events/~1opendxl-acme~1event~1runneralert"
 services:
   ACME Anvil Service:
     info:
       title: ACME Anvil Service
       version: 7.8.9
+      description: A service that supports alerts and drops.
     externalDocs:
       url: https://acme.github.io/acme-anvil-service/pydoc/acme-anvil-service.html
     requests:
-      /service/anvil/alertregister:
-        $ref: '#/requests/~1service~1anvil~1alertregister'
-      /service/anvil/requestdrop:
-        $ref: '#/requests/~1service~1anvil~1requestdrop'
-      /service/anvil/requestdropencrypted:
-        $ref: '#/requests/~1service~1anvil~1requestdropencrypted'
+    - "$ref": "#/requests/~1opendxl-acme~1service~1anvil~1alertregister"
+    - "$ref": "#/requests/~1opendxl-acme~1service~1anvil~1requestdrop"
+    - "$ref": "#/requests/~1opendxl-acme~1service~1anvil~1requestdropencrypted"
     metadata:
-      properties:
-        anvilId:
-          description: Id for the anvils that this service manages
-        anvilType:
-          description: Type of anvils that this service manages
-      example:
-        anvilId: "12345"
-        anvilType: Sheet Metal
+      anvilId:
+        description: Id for the anvils that this service manages
+        example: '12345'
+      anvilType:
+        description: Type of anvils that this service manages
+        example: Sheet Metal
 events:
-  /event/runneralert:
+  "/opendxl-acme/event/runneralert":
     description: Alerts registered subscribers of a new detected Runner
     payload:
       properties:
@@ -59,45 +52,51 @@ events:
           format: date-time
       example:
         runnerID: 3
-        detectTime: "2018-10-12T16:39:57-08:00"
+        detectTime: '2018-10-12T16:39:57-08:00'
 requests:
-  /service/anvil/alertregister:
+  "/opendxl-acme/service/anvil/alertregister":
     description: Registers client GUID with ACME Anvil Service for Runner Alert events.
       Empty payload, does not return a response.
     payload:
-      $ref: '#/definitions/alertRegisterPayload'
+      "$ref": "#/definitions/alertRegisterPayload"
     externalDocs:
       url: https://acmesolutions.com/specs/opendxl/anvil_alert_register
-  /service/anvil/requestdrop:
+  "/opendxl-acme/service/anvil/requestdrop":
     description: Requests ACME Anvil Service data drop for the specified target file
-    tags:
-      - drop
     payload:
-      $ref: '#/definitions/anvilRequestPayload'
+      "$ref": "#/definitions/anvilRequestPayload"
     response:
       payload:
-        $ref: '#/definitions/anvilResponsePayload'
+        "$ref": "#/definitions/anvilResponsePayload"
     errorResponses:
-      "1":
+      '1':
         description: Unknown target
+        payload:
+          properties:
+            detailedErrorInfo:
+              type: string
+      '2':
+        description: Unexpected error
+        payload:
+          properties:
+            detailedErrorInfo:
+              type: string
     externalDocs:
       url: https://acmesolutions.com/specs/opendxl/anvil_request
-  /service/anvil/requestdropencrypted:
+  "/opendxl-acme/service/anvil/requestdropencrypted":
     description: Requests an encrypted ACME Anvil Service data drop for the specified
       target file
     payload:
       type: object
-    tags:
-      - drop
     response:
       payload:
         description: Raw encrypted data drop
         type: string
         format: binary
       otherFields:
-        properties:
-          publicKey:
-            description: Public key for the encrypted data drop
+        publicKey:
+          description: Public key for the encrypted data drop
+          required: true
 definitions:
   anvilRequestPayload:
     type: object
