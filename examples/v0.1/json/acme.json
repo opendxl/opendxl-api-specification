@@ -48,7 +48,7 @@
       ],
       "metadata": {
         "anvilId": {
-          "description": "Id for the anvils that this service manages",
+          "description": "ID for the anvils that this service manages",
           "example": "12345"
         },
         "anvilType": {
@@ -60,7 +60,7 @@
   },
   "events": {
     "/opendxl-acme/event/runneralert": {
-      "description": "Alerts registered subscribers of a new detected Runner",
+      "description": "Alerts registered subscribers of a new detected Runner.",
       "payload": {
         "properties": {
           "runnerID": {

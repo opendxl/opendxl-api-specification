@@ -1,0 +1,1430 @@
+{
+  "openDxlApi": "0.1",
+  "info": {
+    "title": "McAfee Threat Intelligence Exchange (TIE)",
+    "version": "0.1",
+    "description": "McAfee Threat Intelligence Exchange (TIE) shares local threat reputations to close the gap from encounter to containment.",
+    "contact": {
+      "url": "https://www.mcafee.com/"
+    }
+  },
+
+
+  "solutions": {
+    "TIE Server": {
+      "info": {
+        "title": "TIE Server",
+        "version": "2.3.0"
+      },
+      "externalDocs": {
+        "url": "https://www.mcafee.com/enterprise/en-us/products/threat-intelligence-exchange.html"
+      },
+      "services": [
+        {
+          "$ref": "#/services/McAfee TIE Service"
+        }
+      ],
+      "events": [
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1file~1repchange"
+        },
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1file~1repchange~1broadcast"
+        },
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1cert~1repchange"
+        },
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1file~1firstinstance"
+        },
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1file~1prevalence"
+        },
+        {
+          "$ref": "#/events/~1mcafee~1event~1tie~1file~1detection"
+        }
+      ]
+    }
+  },
+
+
+  "services": {
+    "McAfee TIE Service": {
+      "info": {
+        "title": "McAfee TIE Service",
+        "version": "2.3.0",
+        "description": "DXL service hosted by the McAfee TIE Server."
+      },
+      "requests": [
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1file~1reputation"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1cert~1reputation"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1reputation~1updates"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1file~1agents"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1cert~1agents"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1file~1update_metadata"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1service~1tie~1cert~1update_metadata"
+        }
+      ],
+      "metadata": {}
+    }
+  },
+
+
+  "events": {
+    "/mcafee/event/tie/file/repchange": {
+      "description": "The file reputation change event allows for a client to receive notifications when a previously requested file reputation has changed. Subscribing to this event avoids having to periodically check for updated reputations.",
+      "payload": {
+        "$ref": "#/definitions/File Reputation Change Event Payload"
+      }
+    },
+    "/mcafee/event/tie/file/repchange/broadcast": {
+      "description": "The file reputation change broadcast event allows for a client to receive notifications when any file reputation have changed. Subscribing to this event allows to follow reputation changes on all files.",
+      "payload": {
+        "$ref": "#/definitions/File Reputation Change Broadcast Event Payload"
+      }
+    },
+    "/mcafee/event/tie/cert/repchange": {
+      "description": "The certificate reputation change event allows for a client to receive notifications when a previously requested certificate reputation has changed. Subscribing to this event avoids having to periodically check for updated reputations.",
+      "payload": {
+        "$ref": "#/definitions/Certificate Reputation Change Event Payload"
+      }
+    },
+    "/mcafee/event/tie/file/firstinstance": {
+      "description": "The file first instance event allows for a client to receive notifications when a file is first reported (a reputation is requested for the file) by any client. Subscribing to this event allows to follow new files seen in the environment.",
+      "payload": {
+        "$ref": "#/definitions/File First Instance Event Payload"
+      }
+    },
+    "/mcafee/event/tie/file/prevalence": {
+      "description": "The file prevalence change event allows a client to receive notifications when the file prevalence (number of different agents that have asked for the file reputation) changes. Subscribing to this event allows to follow the progress of the spread of the file.",
+      "payload": {
+        "$ref": "#/definitions/File Prevalence Event Payload"
+      }
+    },
+    "/mcafee/event/tie/file/detection": {
+      "description": "The file detection event allows for a client to receive notifications when a client takes an action over a file. Subscribing to this event allows consumers to be notified about files that had been convicted.",
+      "payload": {
+        "$ref": "#/definitions/File Detection Event Payload"
+      }
+    }
+  },
+
+
+  "requests": {
+    "/mcafee/service/tie/file/reputation": {
+      "description": "The file reputation service operation flow allows for a client to receive file reputation information on demand. Invoking this service queries the TIE Server for the reputations associated with a file identified by any known hash values.",
+      "payload": {
+        "$ref": "#/definitions/File Reputation Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/File Reputation Response Payload"
+        }
+      }
+    },
+    "/mcafee/service/tie/cert/reputation": {
+      "description": "The certificate reputation service operation flow allows for a client to receive certificate reputation information on demand. Invoking this service method from a client will also cause the TIE Server to automatically include that client when broadcasting certificate reputation events in the future.",
+      "payload": {
+        "$ref": "#/definitions/Certificate Reputation Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/Certificate Reputation Response Payload"
+        }
+      }
+    },
+    "/mcafee/service/tie/reputation/updates": {
+      "description": "The reputation update operation flow allows for a client to receive a data bundle from TIE Server containing all reputations that have changed in a given time period.",
+      "payload": {
+        "$ref": "#/definitions/Reputation Updates Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/Reputation Updates Response Payload"
+        }
+      }
+    },
+    "/mcafee/service/tie/file/agents": {
+      "description": "The file first references operation flow allows for a client to receive a data bundle from TIE Server containing a list of agents that made the first reference to a particular file.",
+      "payload": {
+        "$ref": "#/definitions/File First References Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/File First References Response Payload"
+        }
+      }
+    },
+    "/mcafee/service/tie/cert/agents": {
+      "description": "The certificate first references operation flow allows for a client to receive a data bundle from TIE Server containing a list of agents that made the first reference to a particular certificate.",
+      "payload": {
+        "$ref": "#/definitions/Certificate First References Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/Certificate First References Response Payload"
+        }
+      }
+    },
+    "/mcafee/service/tie/file/update_metadata": {
+      "description": "The File Update Metadata service allows clients to provide additional contextual information about a file. The request will include details which will assist the security admin on their threat analysis activities. Metadata also includes information about file detections, relationships with other files and certificates and also details which could be used by other clients to enhance their defense.",
+      "payload": {
+        "$ref": "#/definitions/File Update Metadata Request Payload"
+      },
+      "response": {
+        "description": "No response will be provided by the TIE server."
+      }
+    },
+    "/mcafee/service/tie/cert/update_metadata": {
+      "description": "The Certificate Update Metadata service allows clients to provide additional contextual information about a certificate. The request will include details which will assist the security admin on their threat analysis activities.",
+      "payload": {
+        "$ref": "#/definitions/Certificate Update Metadata Request Payload"
+      },
+      "response": {
+        "description": "No response will be provided by the TIE server."
+      }
+    }
+  },
+
+
+  "definitions": {
+    "File Reputation Change Broadcast Event Payload": {
+      "properties": {
+        "oldReputations": {
+          "$ref": "#/definitions/Old Reputations Object"
+        },
+        "newReputations": {
+          "$ref": "#/definitions/New Reputations Object"
+        },
+        "hashes": {
+          "$ref": "#/definitions/Hashes Object"
+        },
+        "updateTime": {
+          "$ref": "#/definitions/Update Time Object"
+        }
+      },
+      "example": {
+        "oldReputations":{
+          "reputations":[
+            {
+              "trustLevel":0,
+              "providerId":3,
+              "createDate":1409783001,
+              "attributes":{
+                "2098277":"256",
+                "2112660":"99"
+              }
+            },
+            {
+              "trustLevel":99,
+              "providerId":1,
+              "createDate":1409783001,
+              "attributes":{
+                "2120340":"2139160704"
+              }
+            }
+          ],
+          "props":{
+            "serverTime":1409851328
+          }
+        },
+        "newReputations":{
+          "reputations":[
+            {
+              "trustLevel":85,
+              "providerId":3,
+              "createDate":1409783001,
+              "attributes":{
+                "2098277":"256",
+                "2112660":"99"
+              }
+            },
+            {
+              "trustLevel":99,
+              "providerId":1,
+              "createDate":1409783001,
+              "attributes":{
+                "2120340":"2139160704"
+              }
+            }
+          ],
+          "props":{
+            "serverTime":1409851328
+          }
+        },
+        "hashes":[
+          {
+            "type":"md5",
+            "value":"bQvLG6j1WmwRB8LZ2gPa1w=="
+          },
+          {
+            "type":"sha1",
+            "value":"OxbrjQd0H6+3meBW5YuBoInTcqM="
+          },
+          {
+            "type":"sha256",
+            "value":"yXfKH1ESH+5YzaiIJ6YXOtTx1y2AJihOTE9EMCqWfkA="
+          }
+        ],
+        "updateTime":1409851328
+      }
+    },
+    "File Reputation Change Event Payload": {
+      "properties": {
+        "oldReputations": {
+          "$ref": "#/definitions/Old Reputations Object"
+        },
+        "newReputations": {
+          "$ref": "#/definitions/New Reputations Object"
+        },
+        "hashes": {
+          "$ref": "#/definitions/Hashes Object"
+        },
+        "updateTime": {
+          "$ref": "#/definitions/Update Time Object"
+        },
+        "relationships": {
+          "type": "object",
+          "description": "	If present this field indicates that there are relevant relationships for this file. Currently the only relevant relationship is the signing certificate. If absent then this means that the file does not have any relevant relationships at the time of the reputation change.",
+          "properties": {
+            "certificate": {
+              "type": "object",
+              "properties": {
+                "hashes": {
+                  "$ref": "#/definitions/Hashes Object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "oldReputations":{
+          "reputations":[
+            {
+              "trustLevel":0,
+              "providerId":3,
+              "createDate":1409783001,
+              "attributes":{
+                "2098277":"256",
+                "2112660":"99"
+              }
+            },
+            {
+              "trustLevel":99,
+              "providerId":1,
+              "createDate":1409783001,
+              "attributes":{
+                "2120340":"2139160704"
+              }
+            }
+          ],
+          "props":{
+            "serverTime":1409851328
+          }
+        },
+        "newReputations":{
+          "reputations":[
+            {
+              "trustLevel":85,
+              "providerId":3,
+              "createDate":1409783001,
+              "attributes":{
+                "2098277":"256",
+                "2112660":"99"
+              }
+            },
+            {
+              "trustLevel":99,
+              "providerId":1,
+              "createDate":1409783001,
+              "attributes":{
+                "2120340":"2139160704"
+              }
+            }
+          ],
+          "props":{
+            "serverTime":1409851328
+          }
+        },
+        "relationships": {
+          "certificate": {
+            "hashes": [
+              {
+                "value": "rB/QkipKKm5XeazdYodHwoOUsLk=",
+                "type": "sha1"
+              }
+            ]
+          }
+        },
+        "hashes":[
+          {
+            "type":"md5",
+            "value":"bQvLG6j1WmwRB8LZ2gPa1w=="
+          },
+          {
+            "type":"sha1",
+            "value":"OxbrjQd0H6+3meBW5YuBoInTcqM="
+          },
+          {
+            "type":"sha256",
+            "value":"yXfKH1ESH+5YzaiIJ6YXOtTx1y2AJihOTE9EMCqWfkA="
+          }
+        ],
+        "updateTime":1409851328
+      }
+    },
+    "File First Instance Event Payload": {
+      "properties": {
+        "hashes": {
+          "$ref": "#/definitions/Hashes Object"
+        },
+        "agentGuid": {
+          "type": "string",
+          "description": "The ID of the client that caused the prevalence change by asking for the file's reputation for the first time by this agent."
+        }
+      },
+      "example": {
+        "hashes":[
+          {
+            "type":"sha1",
+            "value":"0wzjHGXydh+ijtstLjkl1CkZgqU="
+          },
+          {
+            "type":"md5",
+            "value":"FvdpvB03zBTjCTuYgc8WkQ=="
+          },
+          {
+            "type":"sha256",
+            "value":"yXfKH1ESH+5YzaiIJ6YXOtTx1y2AJihOTE9EMCqWfkA="
+          }
+        ],
+        "agentGuid":"{abc5d2c6-e959-11e3-baeb-005056c00009}"
+      }
+    },
+    "File Prevalence Event Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/File First Instance Event Payload" },
+        {
+          "properties": {
+            "agentFirstReference": {
+              "type": "integer",
+              "description": "Epoch time for the first reputation request by the agent that changed the file prevalence."
+            },
+            "enterpriseCount": {
+              "type": "integer",
+              "description": "Total number of agents that have asked for the reputation of the file at least once. The minimum value for this attribute is 1."
+            },
+            "prevalent": {
+              "type": "boolean",
+              "description": "\"true\" if the file is considered prevalent in the Enterprise or \"false\" otherwise. Once TIE generates the event with prevalent = true it will no longer send prevalence change events for this file."
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "type":"sha1",
+                "value":"0wzjHGXydh+ijtstLjkl1CkZgqU="
+              },
+              {
+                "type":"md5",
+                "value":"FvdpvB03zBTjCTuYgc8WkQ=="
+              },
+              {
+                "type":"sha256",
+                "value":"yXfKH1ESH+5YzaiIJ6YXOtTx1y2AJihOTE9EMCqWfkA="
+              }
+            ],
+            "agentGuid":"{abc5d2c6-e959-11e3-baeb-005056c00009}",
+            "agentFirstReference": 1392320769,
+            "enterpriseCount": 125,
+            "prevalent": false
+          }
+        }
+      ]
+    },
+    "File Detection Event Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/File First Instance Event Payload" },
+        {
+          "properties": {
+            "remediationAction": {
+              "type": "integer",
+              "description": "See remediation types table in the TIE SDK"
+            },
+            "localReputation": {
+              "type": "integer",
+              "description": "Local defined reputation level."
+            },
+            "detectionTime": {
+              "type": "integer",
+              "description": "Timestamp of the detection."
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "value":"CZnbhOFq32TBWnuAOUhLMw==",
+                "type":"md5"
+              },
+              {
+                "value":"7vZcAfgW1DgH2WrHY5A3h14Fbks=",
+                "type":"sha1"
+              },
+              {
+                "type":"sha256",
+                "value":"yXfKH1ESH+5YzaiIJ6YXOtTx1y2AJihOTE9EMCqWfkA="
+              }
+            ],
+            "agentGuid":"{abc5d2c6-e959-11e3-baeb-005056c00009}",
+            "remediationAction":5,
+            "localReputation":1,
+            "detectionTime":1402617156
+          }
+        }
+      ]
+    },
+    "Certificate Reputation Change Event Payload": {
+      "properties": {
+        "oldReputations": {
+          "$ref": "#/definitions/Old Reputations Object"
+        },
+        "newReputations": {
+          "$ref": "#/definitions/New Reputations Object"
+        },
+        "hashes": {
+          "$ref": "#/definitions/Hashes Object"
+        },
+        "publicKeySha1": {
+          "$ref": "#/definitions/Public Key SHA1 Object"
+        },
+        "updateTime": {
+          "$ref": "#/definitions/Update Time Object"
+        }
+      },
+      "example": {
+        "publicKeySha1": "qi4bD+Y7VI1abbYyLjJLUAi2+Zg=",
+        "hashes": [
+          {
+            "value": "X/1fNllXfncgp4Sx0qgRnYB5Klg=",
+            "type": "sha1"
+          }
+        ],
+        "oldReputations": {
+          "reputations": [
+            {
+              "providerId": 2,
+              "createDate": 1396563520,
+              "trustLevel": 0
+            },
+            {
+              "attributes": {
+                "2109333": "1",
+                "2109589": "1396563520"
+              },
+              "providerId": 4,
+              "createDate": 1396563520,
+              "trustLevel": 0
+            }
+          ],
+          "props": {
+            "serverTime": 1487856678
+          }
+        },
+        "newReputations": {
+          "reputations": [
+            {
+              "providerId": 2,
+              "createDate": 1396563520,
+              "trustLevel": 99
+            },
+            {
+              "attributes": {
+                "2109333": "1",
+                "2109589": "1396563520"
+              },
+              "providerId": 4,
+              "createDate": 1396563520,
+              "trustLevel": 0
+            }
+          ],
+          "props": {
+            "serverTime": 1487856678
+          }
+        },
+        "updateTime":1409851328
+      }
+    },
+
+
+    "File Reputation Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Reputation Request Base Object" },
+        {
+          "properties": {
+            "fileType": {
+              "type": "integer",
+              "description": "Encoded file type, used to improve search behaviour (Example: \"EXE\" or \"JS\". Providing the file type enables effective down-selection and retention policies. For encoding details, see Encoded File Types in the TIE SDK for more information."
+            },
+            "scanType": {
+              "type": "integer",
+              "description": "NOTE: This property is accepted but not currently honored by the current version of TIE Server. The default value is currently always assumed. The type of scan operation to which this report applies."
+            },
+            "certSha1": {
+              "type": "string",
+              "description": "NOTE: This property is accepted but will be ignored by the current version of TIE Server. SHA-1 of the certificate signing the file."
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "value":"3tt/SI6IFXSHHisJtOUWhRFp0Y4=",
+                "type":"sha1"
+              },
+              {
+                "value":"MQKz601c9VO26cNqWRdcCg==",
+                "type":"md5"
+              }
+            ],
+            "fileType": 18,
+            "scanType": 1,
+            "certSha1": "npN587OCHVtutV0Tu3VWiG29uOc=",
+            "certPublicKeySha1": "qKEUVpy1IfEloPPnGq+eeNFrKIM="
+          }
+        }
+      ]
+    },
+    "File Reputation Response Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Reputations Object" },
+        {
+          "properties": {
+            "props": {
+              "type": "object",
+              "properties": {
+                "submitMetaData": {
+                  "$ref": "#/definitions/Submit Metadata Object"
+                },
+                "atdCandidate": {
+                  "type": "integer",
+                  "description": "Optional sent only when ATD is enabled and the file is an ATD candidate. When this flag is set to 1, the TIE server is requesting the client to submit the file sample for sandboxing."
+                },
+                "masterServer": {
+                  "type": "string",
+                  "description": "Hostname and IP of the TIE Server. Only present when atdCandidate is present. This is the server that should be used by the clients to submit the file sample for sandboxing."
+                }
+              }
+            }
+          },
+          "example": {
+            "reputations":[
+              {
+                "attributes":{
+                  "2098277": "256",
+                  "2102165": "1392320762",
+                  "2101652": "0",
+                  "2111893": "1",
+                  "2114965": "0",
+                  "2123412": "1",
+                  "2123668": "26",
+                  "2123924": "100",
+                  "2124180": "99",
+                  "2124436": "98",
+                  "2124692": "72",
+                  "2124948": "61",
+                  "2125204": "44",
+                  "2125460": "12",
+                  "2125716": "44"
+                },
+                "trustLevel":0,
+                "providerId":3,
+                "createDate":1392320762
+              },
+              {
+                "trustLevel":0,
+                "providerId":1,
+                "createDate":1392321493
+              }
+            ],
+            "props":{
+              "submitMetaData":1,
+              "serverTime":1392321493,
+              "atdCandidate":1,
+              "masterServer": "masterhost;10.111.111.111"
+            }
+          }
+        }
+      ]
+    },
+    "Certificate Reputation Request Payload": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Reputation Request Base Object"
+        },
+        {
+          "example": {
+            "publicKeySha1": "3lHcG/IeSgU/EhzBvMOzZSyRBZg=",
+            "hashes": [
+              {
+                "value": "rB/QkipKKm5XeazdYodHwoOUsLk=",
+                "type": "sha1"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Certificate Reputation Response Payload": {
+      "properties": {
+        "reputations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "providerId": {
+                "type": "integer",
+                "description": "The identifier for the particular \"provider\" that provided the reputation."
+              },
+              "createDate": {
+                "type": "integer",
+                "description": "Timestamp for the creation of this reputation data."
+              },
+              "trustLevel": {
+                "type": "integer",
+                "description": "Constants that are used to indicate the `trust level` of a file or certificate."
+              },
+              "attributes": {
+                "type": "object",
+                "description": "A provider-specific set of attributes in key-value form.",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "props": {
+          "type": "object",
+          "properties": {
+            "submitMetaData": {
+              "$ref": "#/definitions/Submit Metadata Object"
+            },
+            "serverTime": {
+              "$ref": "#/definitions/Server Time Object"
+            }
+          }
+        },
+        "overridden": {
+          "type": "object",
+          "description": "Included if there are files signed with this certificate and for which an override (Enterprise) reputation is set.",
+          "properties": {
+            "files": {
+              "type": "array",
+              "description": "List of files signed with this certificate and for which an override (Enterprise) reputation is set. This list will contain one entry for each file with overrides. If there are too many files, then the list will be populated with as many",
+              "items": {
+                "$ref": "#/definitions/Hashes Object"
+              }
+            },
+            "truncated": {
+              "type": "integer",
+              "description": "If set to 1 this means that the list of overridden files has been truncated as there were too many files to report. There could be files with overrides and that are not present in the list of files in this message. If set to 0 this means that the list of overridden files is complete and there are no other files signed with this certificate and for which an override (Enterprise) reputation is set."
+            }
+          }
+        }
+      },
+      "example": {
+        "reputations": [
+          {
+            "providerId": 2,
+            "createDate": 1396563520,
+            "trustLevel": 99
+          },
+          {
+            "attributes": {
+              "2109333": "1",
+              "2109589": "1396563520"
+            },
+            "providerId": 4,
+            "createDate": 1396563520,
+            "trustLevel": 0
+          }
+        ],
+        "overridden": {
+          "truncated": 0,
+          "files": [
+            {
+              "hashes": [
+                {
+                  "type": "md5",
+                  "value": "CTWz2oVIu0RisXjZnCG4cA=="
+                },
+                {
+                  "type": "sha1",
+                  "value": "FHHwTNDzxzt+YqcdCGk8MGVKVV8="
+                },
+                {
+                  "type": "sha256",
+                  "value": "RjU4pJdE+gXo0LH4pRwO/4B4vjSSS1kvgriSJ+IwWAo="
+                }
+              ]
+            },
+            {
+              "hashes": [
+                {
+                  "type": "md5",
+                  "value": "2LB7JR27x99WGbxm68kxcg=="
+                },
+                {
+                  "type": "sha256",
+                  "value": "mjeiJBg+iAcXbRwOyFYMwj10AQFjyA/YP+N0oP91cLI="
+                }
+              ]
+            }
+          ]
+        },
+        "props": {
+          "submitMetaData": 1,
+          "serverTime": 1396655764
+        }
+      }
+    },
+    "Reputation Updates Request Payload": {
+      "properties": {
+        "sinceTime": {
+          "type": "integer",
+          "description": "	The timestamp (epoch time - in seconds) to retrieve changed reputations from. It is strongly recommended that this is set to the value returned in the serverTime property of the response to the latest reputation request. Note that both File and Certificate reputation requests will return the server time in the response."
+        },
+        "queryLimit": {
+          "type": "integer",
+          "description": "The max number of reputations to return (Allowed values: 1-5000). If omitted this defaults to a configurable parameter by server or 100 if the server parameter is unconfigured."
+        },
+        "targeted": {
+          "type": "boolean",
+          "description": "When set to true the server will include only items that the consumer has previously requested reputations for or that are prevalent. If omitted this defaults to a configurable parameter by server or False if unconfigured."
+        },
+        "targetTypes": {
+          "type": "object",
+          "description": "Types of reputation subjects to include in the response, alongside with the hash type to return for each subject. If \"targetTypes\" is omitted TIE will include both files and certificates in the response and it will default to the backwards compatible behavior: It will return the SHA1 hash for certificates and for files it will return the SHA1 hash if available, else the MD5 or the SHA256 in this order.",
+          "properties": {
+            "file": {
+              "type": "string",
+              "description": "Possible values are \"sha1\", \"md5\", \"sha256\"."
+            },
+            "cert": {
+              "type": "string",
+              "description": "Possible values are \"sha1\"."
+            }
+          }
+        }
+      },
+      "example": {
+        "sinceTime":1402612347,
+        "queryLimit":300,
+        "targeted":true,
+        "targetTypes": {
+          "file": "sha256",
+          "cert": "sha1"
+        }
+      }
+    },
+    "Reputation Updates Response Payload": {
+      "properties": {
+        "fileHashes": {
+          "type": "array",
+          "description": "This is included only if \"file\" is a selected subject type or when using default options. Between this and certificateHashes will contain at most as many entries as the queryLimit provided, or the server default if no limit was specified. For targeted requests, only prevalent items or items for which the invoker has previously issued a reputation request will be included. Note that only one hash for each updated file will be included in this response. The hash included will depend on the available hashes for the given file and on the value of \"targetTypes\".\"file\" attribute.",
+          "items": {
+            "$ref": "#/definitions/Hash Object"
+          }
+        },
+        "certificateHashes": {
+          "type": "array",
+          "description": "This is included only if \"cert\" is a selected subject type or when using default options. Between this and fileHashes will contain at most as many entries as the queryLimit provided, or the server default if no limit was specified.",
+          "items": {
+            "$ref": "#/definitions/Hash Object"
+          }
+        },
+        "latestUpdateTime": {
+          "type": "integer",
+          "description": "The epoch time of the latest update amongst the hashes listed."
+        },
+        "props": {
+          "type": "object",
+          "description": "Will be present when there are more updates in the server than the provided queryLimit.",
+          "properties": {
+            "serverTime": {
+              "type": "integer",
+              "description": "Will be present and set to the current server epoch time in seconds if there are more updates in the server than the provided queryLimit."
+            },
+            "queryLimitExceeded": {
+              "type": "integer",
+              "description": "Will be present and set to \"true\" if there are more updates in the server than the provided queryLimit."
+            }
+          }
+        }
+      },
+      "example": {
+        "props": {
+          "serverTime": 1518720115,
+          "queryLimitExceeded": true
+        },
+        "fileHashes":
+        [
+          {
+            "value": "ESK6sSE0rp1D+F3K9xrKLH/Wuaw=",
+            "type": "sha1"
+          },
+          {
+            "value": "3tt/SI6IFXSHHisJtOUWhRFp0Y4=",
+            "type": "sha1"
+          },
+          {
+            "value": "MQKz601c9VO26cNqWRdcCg==",
+            "type": "md5"
+          }
+        ],
+        "certificateHashes":
+        [
+          {
+            "value": "ERD6shE0rp1D+F3rUdrKLH/Wuet=",
+            "type": "sha1"
+          }
+        ],
+        "latestUpdateTime": 1402602516
+      }
+    },
+    "File First References Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Hashes Object"},
+        {
+          "properties": {
+            "queryLimit": {
+              "type": "integer",
+              "description": "The max number of systems to return. By default is 100, ranging from 1 to 5000."
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "type":"sha1",
+                "value":"8nG/TX+SLaCjQjLw6xwWZZX6kI4="
+              }
+            ],
+            "queryLimit":5000
+          }
+        }
+      ]
+    },
+    "File First References Response Payload": {
+      "properties": {
+        "totalCount": {
+          "type": "integer",
+          "description": "The total count of systems that have referenced this file (First references)"
+        },
+        "agents": {
+          "type": "array",
+          "description": "List of agents",
+          "items": {
+            "properties": {
+              "date": {
+                "type": "integer",
+                "description": ""
+              },
+              "agentGuid": {
+                "$ref": "#/definitions/Agent GUID Object"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "totalCount":3,
+        "agents":[
+          {
+            "date":1402676072,
+            "agentGuid":"{66c5d2c6-e959-11e3-baeb-005056c00008}"
+          },
+          {
+            "date":1402676078,
+            "agentGuid":"{abc5d2c6-e959-11e3-baeb-005056c00009}"
+          },
+          {
+            "date":1402676082,
+            "agentGuid":"{86c5d2c6-e959-11e3-baeb-005056c00067}"
+          }
+        ]
+      }
+    },
+    "Certificate First References Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Hashes Object"},
+        {
+          "properties": {
+            "queryLimit": {
+              "type": "integer",
+              "description": "The max number of systems to return. By default is 100, ranging from 1 to 5000."
+            },
+            "publicKeySha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            }
+          },
+          "example": {
+            "publicKeySha1":"3lHcG/IeSgU/EhzBvMOzZSyRBZg=",
+            "hashes":[
+              {
+                "value":"rB/QkipKKm5XeazdYodHwoOUsLk=",
+                "type":"sha1"
+              }
+            ],
+            "queryLimit":100
+          }
+        }
+      ]
+    },
+    "Certificate First References Response Payload": {
+      "properties": {
+        "totalCount": {
+          "type": "integer",
+          "description": "The total count of systems that have referenced this file (First references)"
+        },
+        "agents": {
+          "type": "array",
+          "description": "List of agents",
+          "items": {
+            "properties": {
+              "date": {
+                "type": "integer",
+                "description": ""
+              },
+              "agentGuid": {
+                "$ref": "#/definitions/Agent GUID Object"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "totalCount":3,
+        "agents":[
+          {
+            "date":1402676072,
+            "agentGuid":"{66c5d2c6-e959-11e3-baeb-005056c00008}"
+          },
+          {
+            "date":1402676078,
+            "agentGuid":"{abc5d2c6-e959-11e3-baeb-005056c00009}"
+          },
+          {
+            "date":1402676082,
+            "agentGuid":"{86c5d2c6-e959-11e3-baeb-005056c00067}"
+          }
+        ]
+      }
+    },
+    "File Update Metadata Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Hashes Object" },
+        {
+          "properties": {
+            "scanType": {
+              "type": "integer",
+              "description": "NOTE: This property is accepted but not currently honored by the current version of TIE Server. The default value is currently always assumed. The type of scan operation to which this report applies."
+            },
+            "agentGuid": {
+              "$ref": "#/definitions/Agent GUID Object"
+            },
+            "name": {
+              "type": "string",
+              "description": "UTF-8 encoded name of the file. TIE Server will store filenames up to a configurable limit (default value: 500)."
+            },
+            "size": {
+              "type": "integer",
+              "description": "File size in bytes"
+            },
+            "path": {
+              "type": "string",
+              "description": "UTF-8 encoded path of the file. TIE Server will store file paths up to a configurable limit (default value: 500)."
+            },
+            "version": {
+              "type": "string",
+              "description": "File version"
+            },
+            "fileType": {
+              "type": "integer",
+              "description": "(X) File type of a given file: driver, dll, exe or non-PE"
+            },
+            "signedBits": {
+              "type": "integer"
+            },
+            "companyName": {
+              "type": "string",
+              "description": "UTF-8 encoded name of the publisher of the file."
+            },
+            "profilerFlags": {
+              "type": "string",
+              "description": "Profiler attributes."
+            },
+            "certIssuer": {
+              "type": "string",
+              "description": "Issuer of the signing certificate."
+            },
+            "certSubject": {
+              "type": "string",
+              "description": "Subject of the signing certificate."
+            },
+            "productName": {
+              "type": "string",
+              "description": "UTF-8 encoded name of the product corresponding to the file (as extracted from the binary’s version info)."
+            },
+            "productVersion": {
+              "type": "string",
+              "description": "UTF-8 encoded version string of the application corresponding to the file."
+            },
+            "objectType": {
+              "type": "integer",
+              "description": "The type of object being reported upon. Currently supported types are: 1 (File) - This is the default if omitted - and 4 (Process). TIE will not keep agregate local reputation data reported for processes. Only for files."
+            },
+            "localRep": {
+              "type": "integer",
+              "description": "Local reputation for the file."
+            },
+            "parentLocalRep": {
+              "type": "integer",
+              "description": "Reputation of the main executable of the process that created the file."
+            },
+            "prePromptLocalRep": {
+              "type": "integer",
+              "description": "Pre-prompt local reputation of the file."
+            },
+            "localRepRuleId": {
+              "type": "integer"
+            },
+            "parentSha1": {
+              "type": "string",
+              "description": "\"SHA-1\" of the main executable of the process that created the file being reported."
+            },
+            "osVersion": {
+              "type": "string",
+              "description": "OS version that the file was found on. Representation of major and minor in Little Endian format."
+            },
+            "actorLocalRep": {
+              "type": "integer"
+            },
+            "caRep": {
+              "type": "string",
+              "description": "Reputation of the Certificate Authority (CA)"
+            },
+            "contentVersion": {
+              "type": "string",
+              "description": "The major and minor versions of the content .Representation of major,minor,subminor,build in Little Endian format."
+            },
+            "productEnforcing": {
+              "type": "boolean",
+              "description": "Whether the client is running in Enforcement mode."
+            },
+            "ruleEnforcing": {
+              "type": "boolean",
+              "description": "Whether the rule was enforced or not (1 for enforced and 0 for not)."
+            },
+            "jtiAvProductId": {
+              "type": "string",
+              "description": "Product Id of the client"
+            },
+            "userPrompted": {
+              "type": "boolean",
+              "description": "Whether the user was prompted or not (1 for prompted and 0 for not)."
+            },
+            "detectionType": {
+              "type": "integer",
+              "description": "Detection type."
+            },
+            "detectionName": {
+              "type": "string",
+              "description": "Detection name from the detecting product."
+            },
+            "certSha1": {
+              "type": "string",
+              "description": "Base 64 encoding of the SHA-1 of the certificate signing the file"
+            },
+            "certPublicKeySha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            },
+            "actorSha1": {
+              "type": "string",
+              "description": "Base 64 encoding of the \"SHA-1\" hash of the primary actor. This is the main process that loaded the file/process being reported on."
+            },
+            "remediation": {
+              "type": "integer",
+              "description": "Indicates that a detection has occurred and provides the action applied. See remediation types table in the TIE SDK."
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "value":"cgF66fVGT1CMxZG2BfWrcDd1ws2BzWCU619XEOj3uCo=",
+                "type":"sha256"
+              },
+              {
+                "value":"5tt/SI6IFXSHHisJtOUWhRFp0Y4=",
+                "type":"sha1"
+              },
+              {
+                "value":"MQKz501c9VO24cNqWRdcCg==",
+                "type":"md5"
+              }
+            ],
+            "scanType": 1,
+            "agentGuid":"testGuid",
+            "name":"Notepad++.exe",
+            "size":107008,
+            "path":"C:\\Users\\Administrator\\Desktop\\Notepad++\\Notepad++.exe",
+            "version":22,
+            "fileType":16,
+            "signedBits":0,
+            "companyName":null,
+            "profilerFlags":"465:1a200;5a5:20;6a5:414c2700;765:41e4bd80;865:fffffffc;965:3;a65:0;b65:0;c65:0;e65:2024842;f65:10a4640;1065:5;1165:69;1265:6;1365:0;1465:5c00;1565:2a0;1665:e0;17a5:101000;19a5:1",
+            "certIssuer":null,
+            "certSubject":null,
+            "productName":"Sample",
+            "productVersion":  "6.1.7601.18128",
+            "objectType": 1,
+            "localRep":85,
+            "parentLocalRep":0,
+            "prePromptLocalRep":50,
+            "localRepRuleId":0,
+            "parentSha1":null,
+            "osVersion":"25769803777",
+            "actorLocalRep":0,
+            "caRep":0,
+            "contentVersion":"47850746040811521",
+            "productEnforcing":1,
+            "ruleEnforcing":1,
+            "jtiAvProductId":"28600",
+            "userPrompted":1,
+            "detectionType":0,
+            "detectionName":null,
+            "remediation":0,
+            "certSha1":null,
+            "certPublicKeySha1":null,
+            "actorSha1":null,
+            "vseRemediation":20,
+            "vseDetectionName":"TestVseDetection",
+            "vseSuppressed":false,
+            "vseDetectionType":2,
+            "vseContentVersion":"12345",
+            "vseProductId": 25
+          }
+        }
+      ]
+    },
+    "Certificate Update Metadata Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Hashes Object" },
+        {
+          "properties": {
+            "publicKeySha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            },
+            "algorithm": {
+              "type": "string",
+              "description": "Certificate's algorithm."
+            },
+            "issuerDN": {
+              "type": "string",
+              "description": "Distinguished Name of the certificate's Issuer."
+            },
+            "issuerPublicKeySha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            },
+            "serialNumber": {
+              "type": "string",
+              "description": "Serial Number of the certificate."
+            },
+            "subjectName": {
+              "type": "string",
+              "description": "Subject of the certificate."
+            },
+            "validFrom": {
+              "type": "integer",
+              "description": "Certificate's valid From date (long value)."
+            },
+            "validTo": {
+              "type": "integer",
+              "description": "Certificate's valid To date (long value)"
+            },
+            "contentVersion": {
+              "type": "string",
+              "description": "The major and minor versions of the content. Representation of major,minor,subminor,build in Little Endian format."
+            },
+            "productEnforcing": {
+              "type": "boolean",
+              "description": "Whether the client is running in Enforcement mode."
+            },
+            "ruleEnforcing": {
+              "type": "boolean",
+              "description": "Whether the rule was enforced or not (1 for enforced and 0 for not)."
+            },
+            "subject": {
+              "type": "string",
+              "description": "Distinguished Name of the certificate."
+            },
+            "issuer": {
+              "type": "string",
+              "description": "Name of the certificate's Issuer."
+            },
+            "issuerSha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            }
+          },
+          "example": {
+            "hashes":[
+              {
+                "value":"npN587OCHVtutV0Tu3VWiG29uOc=",
+                "type":"sha1"
+              }
+            ],
+            "publicKeySha1":"qKEUVpy1IfEloPPnGq+eeNFrKIM=",
+            "algorithm":"sha1RSA",
+            "issuerDN":"CN=Microsoft Windows Verification PCA, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+            "issuerPublicKeySha1":"KxfRYCjaN34LrVZGgVqX6WlorWE=",
+            "serialNumber":"YRU0ZAAAAAAADA==",
+            "subjectName":"Microsoft Windows",
+            "validFrom":1260223064,
+            "validTo":1299535064,
+            "contentVersion":"47850746040811521",
+            "productEnforcing":1,
+            "ruleEnforcing":1,
+            "subject":"CN=Microsoft Windows, OU=MOPR, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+            "issuer":"Microsoft Windows Verification PCA",
+            "issuerSha1":"XfDXVxsHgHg5YMaLeFcf/X7a8CE="
+          }
+        }
+      ]
+    },
+
+
+    "Reputation Request Base Object": {
+      "allOf": [
+        { "$ref": "#/definitions/Hashes Object" },
+        {
+          "properties": {
+            "certPublicKeySha1": {
+              "$ref": "#/definitions/Public Key SHA1 Object"
+            }
+          }
+        }
+      ]
+    },
+    "New Reputations Object": {
+      "allOf": [
+        { "$ref": "#/definitions/Reputations Object" },
+        { "description": "The content of this section will be exactly as the full reputation response message after the change that triggered the event. Thus, all reputation providers are detailed, including both that one for which the reputation has changed and those for which there has been no actual reputation change." }
+      ]
+    },
+    "Old Reputations Object": {
+      "allOf": [
+        { "$ref": "#/definitions/Reputations Object" },
+        { "description": "The content of this section will be exactly as the full reputation response message before the change that triggered the event." }
+      ]
+    },
+    "Reputations Object": {
+      "type": "object",
+      "properties": {
+        "reputations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "trustLevel": {
+                "type": "integer",
+                "description": "Constants that are used to indicate the `trust level` of a file or certificate."
+              },
+              "providerId": {
+                "type": "integer",
+                "description": "The identifier for the particular \"provider\" that provided the reputation."
+              },
+              "detectTime": {
+                "type": "integer",
+                "description": "Timestamp of the detection."
+              },
+              "attributes": {
+                "type": "object",
+                "description": "A provider-specific set of attributes in key-value form.",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "props": {
+          "type": "object",
+          "properties": {
+            "serverTime": {
+              "type": "integer",
+              "description": "TIE Server epoch time (in seconds)."
+            }
+          }
+        }
+      }
+    },
+    "Hashes Object": {
+      "type": "object",
+      "description": "Known hashes for the file or certificate. Possible hashes are \"sha1\", \"sha256\" and \"md5\". Note: in backwards compatible mode only sha1 and md5 will be provided. Also the event will only be sent for files for which both sha1 and md5 are known.",
+      "properties": {
+        "hashes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Hash Object"
+          }
+        }
+      }
+    },
+    "Hash Object": {
+      "type": "object",
+      "description": "Possible hashes are \"sha1\", \"sha256 and \"md5\". Note: in backwards compatible mode only sha1 and md5 will be provided.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Base 64 encoding of the hash bytes."
+        },
+        "value": {
+          "type": "string",
+          "description": "\"sha1\", \"md5\", and \"sha256\" are currently supported values"
+        }
+      }
+    },
+    "Update Time Object": {
+      "type": "integer",
+      "description": "Time the reputation for this file was updated."
+    },
+    "Public Key SHA1 Object": {
+      "type": "string",
+      "description": "Base 64 encoding of the SHA-1 hash of the certificate's public key."
+    },
+    "Submit Metadata Object": {
+      "type": "integer",
+      "description": "Flag to send a update_metadata call for this certificate."
+    },
+    "Server Time Object": {
+      "type": "integer",
+      "description": "TIE Server epoch time (in seconds)."
+    },
+    "Agent GUID Object": {
+      "type": "string",
+      "description": "Agent GUID in standard format of the system."
+    }
+  }
+}
