@@ -83,7 +83,12 @@
         }
       },
       "otherFields": {
-        "$ref": "#/definitions/BrokerTopicOtherFields"
+        "changeCount": {
+          "description": "Change count related to topics"
+        },
+        "startTime": {
+          "description": "Broker start time (as seconds from epoch)"
+        }
       }
     },
     "/mcafee/event/dxl/brokerregistry/topicremoved": {
@@ -101,7 +106,12 @@
         }
       },
       "otherFields": {
-        "$ref": "#/definitions/BrokerTopicOtherFields"
+        "changeCount": {
+          "description": "Change count related to topics"
+        },
+        "startTime": {
+          "description": "Broker start time (as seconds from epoch)"
+        }
       }
     },
     "/mcafee/event/dxl/clientregistry/connect": {
