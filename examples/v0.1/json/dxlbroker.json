@@ -32,15 +32,36 @@
       ]
     }
   },
+  "services": {
+    "DXL Broker Pseudo-Service": {
+      "info": {
+        "title": "Supported Service Requests",
+        "version": "0.1",
+        "description": "This is a 'placeholder' service section for grouping the service requests listed in this schema. This is not a true DXL service and will not appear in the DXL Broker's service registry."
+      },
+      "requests": [
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1testmode~1disable" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1testmode~1enable" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1health" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1subs" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1brokerregistry~1query" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1brokerregistry~1topicquery" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1clientregistry~1query" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1query" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1register" },
+        { "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1unregister" }
+      ]
+    }
+  },
   "events": {
     "/mcafee/event/dxl/brokerregistry/brokerstate": {
-      "description": "Broker state event",
+      "description": "Broker state event.",
       "payload": {
         "$ref": "#/definitions/BrokerStateEvent"
       }
     },
     "/mcafee/event/dxl/brokerregistry/brokerstatetopics": {
-      "description": "Topics associated with a broker state",
+      "description": "Topics associated with a broker state.",
       "payload": {
         "type": "object",
         "properties": {
@@ -69,7 +90,7 @@
       }
     },
     "/mcafee/event/dxl/brokerregistry/topicadded": {
-      "description": "Broker topic: add event",
+      "description": "Broker event sent when a new topic is added.",
       "payload": {
         "type": "object",
         "properties": {
@@ -92,7 +113,7 @@
       }
     },
     "/mcafee/event/dxl/brokerregistry/topicremoved": {
-      "description": "Broker topic: remove event",
+      "description": "Broker event sent when a topic is removed from the broker registry.",
       "payload": {
         "type": "object",
         "properties": {
@@ -115,7 +136,7 @@
       }
     },
     "/mcafee/event/dxl/clientregistry/connect": {
-      "description": "Client registry: connect event",
+      "description": "Broker event sent when a client connects.",
       "payload": {
         "type": "object",
         "properties": {
@@ -130,7 +151,7 @@
       }
     },
     "/mcafee/event/dxl/clientregistry/disconnect": {
-      "description": "Client registry: disconnect event",
+      "description": "Broker event sent when a client disconnects.",
       "payload": {
         "type": "object",
         "properties": {
@@ -145,13 +166,19 @@
       }
     },
     "/mcafee/event/dxl/dumpbrokerstate": {
-      "description": "Dump broker state event"
+      "description": "Event used to trigger broker state dumps to the broker's local storage.",
+      "payload": {
+        "$ref": "#/definitions/EmptyPayload"
+      }
     },
     "/mcafee/event/dxl/dumpservicestate": {
-      "description": "Dump services state event"
+      "description": "Event used to trigger services state dumps to the broker's local storage.",
+      "payload": {
+        "$ref": "#/definitions/EmptyPayload"
+      }
     },
     "/mcafee/event/dxl/eventsubscribernotfound": {
-      "description": "Subscriber not found event",
+      "description": "Used to notify subscribers that no subscriber was found for the given topic.",
       "payload": {
         "type": "object",
         "properties": {
@@ -159,44 +186,34 @@
             "description": "Topic",
             "type": "string"
           }
+        },
+        "example": {
+          "topic": "/mcafee/service/sample/file/request"
         }
       }
     },
     "/mcafee/event/dxl/fabricchange": {
-      "description": "Fabric change event"
+      "description": "Event sent to notify subscribers of a change in the DXL fabric.",
+      "payload": {
+        "$ref": "#/definitions/EmptyPayload"
+      }
     },
     "/mcafee/event/dxl/revocation/list": {
-      "description": "Revocation list event",
+      "description": "Event containing a list of revoked certificates.",
       "payload": {
         "description": "List of certificate data (1 certificate per line)",
-        "type": "string"
+        "type": "string",
+        "example": "84841b6fd81483746dc7390e8e44dfa4c86e1ba8"
       }
     },
     "/mcafee/event/dxl/svcregistry/register": {
-      "description": "Service registry: register event",
+      "description": "Event used to notify subscribers that a service has been registered.",
       "payload": {
-        "$ref": "#/definitions/ServiceRegistryRegisterEvent",
-        "example": {
-          "brokerGuid": "c75cb962-6928-4894-bf83-d6ce9ad36306",
-          "certificates": [
-            "7c357987eabc9dd88481b35297f9e425cd433799",
-            "84841b6fd81483746dc7390e8e44dfa4c86e1ba8"
-          ],
-          "clientGuid": "{e834986f-4e14-44d9-979a-acc35512c894}",
-          "managed": false,
-          "metaData": {},
-          "registrationTime": 1539623701,
-          "requestChannels": [
-            "/isecg/sample/basicservice"
-          ],
-          "serviceGuid": "{3614fef1-635d-456d-82ce-57c165e0b326}",
-          "serviceType": "myService",
-          "ttlMins": 60
-        }
+        "$ref": "#/definitions/ServiceRegistryRegisterEvent"
       }
     },
     "/mcafee/event/dxl/svcregistry/unregister": {
-      "description": "Service registry: unregister event",
+      "description": "Event used to notify subscribers that a service has been unregistered.",
       "payload": {
         "type": "object",
         "properties": {
@@ -210,7 +227,7 @@
       }
     },
     "/mcafee/event/dxl/tenant/limit/exceeded": {
-      "description": "Tenant exceeds byte limit event",
+      "description": "Event notifying subscribers that a given tenant has exceeded the byte limit.",
       "payload": {
         "type": "object",
         "properties": {
@@ -218,34 +235,25 @@
             "description": "Identifier of the tenant that exceeded the limit",
             "type": "string"
           }
+        },
+        "example": {
+          "clientTenantGuid": "{0f41d474-95d7-11e8-1a8f-00155d842e2d}"
         }
       }
     },
     "/mcafee/event/dxl/tenant/limit/reset": {
-      "description": "Tenant limit reset event"
+      "description": "Sent when the tenant byte limit has been reset.",
+      "payload": {
+        "$ref": "#/definitions/EmptyPayload"
+      }
     }
   },
   "requests": {
-    "/mcafee/service/dxl/broker/testmode/disable": {
-      "description": "Disable the test mode",
-      "response": {
-        "payload": {
-          "type": "string",
-          "example": ""
-        }
-      }
-    },
-    "/mcafee/service/dxl/broker/testmode/enable": {
-      "description": "Enable the test mode",
-      "response": {
-        "payload": {
-          "type": "string",
-          "example": ""
-        }
-      }
-    },
     "/mcafee/service/dxl/broker/health": {
-      "description": "Broker health request",
+      "description": "Request for broker health information.",
+      "payload": {
+        "$ref": "#/definitions/EmptyPayload"
+      },
       "response": {
         "payload": {
           "type": "object",
@@ -313,7 +321,7 @@
       }
     },
     "/mcafee/service/dxl/broker/subs": {
-      "description": "Broker subscriptions",
+      "description": "Request the number of the subscriptions for the given topic.",
       "payload": {
         "type": "object",
         "required": [
@@ -345,7 +353,7 @@
       }
     },
     "/mcafee/service/dxl/brokerregistry/query": {
-      "description": "Broker registry: query",
+      "description": "Queries the broker registry for broker details.",
       "payload": {
         "type": "object",
         "properties": {
@@ -393,7 +401,7 @@
       }
     },
     "/mcafee/service/dxl/brokerregistry/topicquery": {
-      "description": "Broker topic: query",
+      "description": "Queries the broker for the number of subscribers for a given set of topics.",
       "payload": {
         "type": "object",
         "properties": {
@@ -430,7 +438,7 @@
       }
     },
     "/mcafee/service/dxl/clientregistry/query": {
-      "description": "Client registry: query",
+      "description": "Queries the client registry for information on the client with the provided clientGuid.",
       "payload": {
         "type": "object",
         "required": [
@@ -448,13 +456,12 @@
       "response": {
         "description": "If no client is connected for the supplied clientGuid, no response is returned. If a client is connected for the supplied clientGuid, an empty response is returned.",
         "payload": {
-          "type": "string",
-          "example": ""
+          "$ref": "#/definitions/EmptyPayload"
         }
       }
     },
     "/mcafee/service/dxl/svcregistry/query": {
-      "description": "Service registry: query",
+      "description": "Queries the information for all services matching the given serviceType and serviceGuid.",
       "payload": {
         "type": "object",
         "properties": {
@@ -468,7 +475,8 @@
           }
         },
         "example": {
-          "serviceType": "/my/service/service1"
+          "serviceType": "/my/service/service1",
+          "serviceGuid": "{ed468d60-4ddc-4f56-99ae-ca436980a35b}"
         }
       },
       "response": {
@@ -631,6 +639,22 @@
           "description": "Broker version",
           "type": "string"
         }
+      },
+      "example": {
+        "bridges":[
+          "{32cd9168-338f-11e4-0d01-005056946833}"
+        ],
+        "bridgeChildren": [
+          "{ced54d6f-111d-6ba9-1f2f-192738cba23c}"
+        ],
+        "connectionLimit": 20000,
+        "guid":"{a0430b86-347a-17e4-0c52-0050569430aa}",
+        "hostname":"testHostname",
+        "port":8883,
+        "startTime": 1546903181,
+        "topicRouting": false,
+        "ttlMins":60,
+        "version": "0.1"
       }
     },
     "IpeHealthPayloadProperties": {
@@ -638,13 +662,25 @@
       "additionalProperties": {
         "properties": {
           "displayName": {
-            "type": "string"
+            "type": "string",
+            "description": "The display name for the property."
           },
           "value": {
-            "type": "string"
+            "type": "string",
+            "description": "The value of the property."
           },
           "type": {
-            "type": "string"
+            "type": "string",
+            "description": "The data type of the property."
+          }
+        }
+      },
+      "example": {
+        "properties": {
+          "dxl.ipe.property.sampleMessageCount": {
+            "displayName": "Sample Message Count",
+            "type": "numeric",
+            "value": "1816"
           }
         }
       }
@@ -654,10 +690,23 @@
       "additionalProperties": {
         "properties": {
           "displayName": {
-            "type": "string"
+            "type": "string",
+            "description": "The display name of the IPE object (fabric, pattern, or object)."
           },
           "properties": {
             "$ref": "#/definitions/IpeHealthPayloadProperties"
+          }
+        }
+      },
+      "example": {
+        "ipeSample": {
+          "displayName": "IPE Sample",
+          "properties": {
+            "dxl.ipe.property.sampleMessageCount": {
+              "displayName": "Sample Message Count",
+              "type": "numeric",
+              "value": "1816"
+            }
           }
         }
       }
@@ -720,7 +769,31 @@
           "description": "Service Time to Live (in minutes)",
           "type": "integer"
         }
+      },
+      "example": {
+        "brokerGuid": "{da5d90d2-bcf4-11e8-0b38-0050569a0c70}",
+        "certificates": [],
+        "clientGuid": "{46e20115-18e9-4b0e-aa30-33ca595abdac}",
+        "clientInstanceGuid": "{46e20115-18e9-4b0e-aa30-33ca595abdac}:b918716c-3f73-4e3e-8292-91cfdc2500d9",
+        "managed": true,
+        "metaData": {
+          "name1": "test1",
+          "name2": "test2"
+        },
+        "registrationTime": 1546909846,
+        "requestChannels": [
+          "/mcafee/service/sample/file/request",
+          "/mcafee/service/sample/cert/request"
+        ],
+        "serviceGuid": "{d57f495c-7bed-4170-9970-61d10914335a}",
+        "serviceType": "/mcafee/service/sample",
+        "ttlMins": 60
       }
+    },
+    "EmptyPayload": {
+      "type": "object",
+      "properties": {},
+      "example": {}
     }
   }
 }
