@@ -64,7 +64,10 @@ events:
       example:
         topic: "/isecg/sample/basicservice"
     otherFields:
-      "$ref": "#/definitions/BrokerTopicOtherFields"
+      changeCount:
+        description: Change count related to topics
+      startTime:
+        description: Broker start time (as seconds from epoch)
   "/mcafee/event/dxl/brokerregistry/topicremoved":
     description: 'Broker topic: remove event'
     payload:
@@ -76,7 +79,10 @@ events:
       example:
         topic: "/isecg/sample/basicservice"
     otherFields:
-      "$ref": "#/definitions/BrokerTopicOtherFields"
+      changeCount:
+        description: Change count related to topics
+      startTime:
+        description: Broker start time (as seconds from epoch)
   "/mcafee/event/dxl/clientregistry/connect":
     description: 'Client registry: connect event'
     payload:
