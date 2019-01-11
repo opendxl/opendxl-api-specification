@@ -657,34 +657,6 @@
         "version": "0.1"
       }
     },
-    "IpeHealthPayloadProperties": {
-      "type": "object",
-      "additionalProperties": {
-        "properties": {
-          "displayName": {
-            "type": "string",
-            "description": "The display name for the property."
-          },
-          "value": {
-            "type": "string",
-            "description": "The value of the property."
-          },
-          "type": {
-            "type": "string",
-            "description": "The data type of the property."
-          }
-        }
-      },
-      "example": {
-        "properties": {
-          "dxl.ipe.property.sampleMessageCount": {
-            "displayName": "Sample Message Count",
-            "type": "numeric",
-            "value": "1816"
-          }
-        }
-      }
-    },
     "IpeHealthPayload": {
       "type": "object",
       "additionalProperties": {
@@ -699,14 +671,45 @@
         }
       },
       "example": {
-        "ipeSample": {
-          "displayName": "IPE Sample",
+        "displayName": "IPE Sample",
+        "properties": {
+          "dxl.ipe.property.sampleMessageCount": {
+            "displayName": "Sample Message Count",
+            "type": "numeric",
+            "value": "1816"
+          }
+        }
+      }
+    },
+    "IpeHealthPayloadProperties": {
+      "type": "object",
+      "additionalProperties": {
+        "properties": {
           "properties": {
-            "dxl.ipe.property.sampleMessageCount": {
-              "displayName": "Sample Message Count",
-              "type": "numeric",
-              "value": "1816"
+            "type": "object",
+            "properties": {
+              "displayName": {
+                "type": "string",
+                "description": "The display name for the property."
+              },
+              "value": {
+                "type": "string",
+                "description": "The value of the property."
+              },
+              "type": {
+                "type": "string",
+                "description": "The data type of the property."
+              }
             }
+          }
+        }
+      },
+      "example": {
+        "properties": {
+          "dxl.ipe.property.sampleMessageCount": {
+            "displayName": "Sample Message Count",
+            "type": "numeric",
+            "value": "1816"
           }
         }
       }
