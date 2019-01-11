@@ -17,15 +17,10 @@ solutions:
     - "$ref": "#/events/~1mcafee~1event~1dxl~1brokerregistry~1topicremoved"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1connect"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1clientregistry~1disconnect"
-    - "$ref": "#/events/~1mcafee~1event~1dxl~1dumpbrokerstate"
-    - "$ref": "#/events/~1mcafee~1event~1dxl~1dumpservicestate"
-    - "$ref": "#/events/~1mcafee~1event~1dxl~1eventsubscribernotfound"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1fabricchange"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1revocation~1list"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1register"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1svcregistry~1unregister"
-    - "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1exceeded"
-    - "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1reset"
 services:
   DXL Broker Service:
     info:
@@ -35,23 +30,23 @@ services:
         requests listed in this schema. This is not a true DXL service and will not
         appear in the DXL Broker's service registry.
     requests:
-    - "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1testmode~1disable"
-    - "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1testmode~1enable"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1health"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1broker~1subs"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1brokerregistry~1query"
-    - "$ref": "#/requests/~1mcafee~1service~1dxl~1brokerregistry~1topicquery"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1clientregistry~1query"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1query"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1register"
     - "$ref": "#/requests/~1mcafee~1service~1dxl~1svcregistry~1unregister"
 events:
   "/mcafee/event/dxl/brokerregistry/brokerstate":
-    description: Broker state event.
+    description: Event containing the current state of a broker. Sent whenever the
+      broker state changes(connections, disconnections, etc.).
     payload:
       "$ref": "#/definitions/BrokerStateEvent"
   "/mcafee/event/dxl/brokerregistry/brokerstatetopics":
-    description: Topics associated with a broker state.
+    description: Event containing all of the currently subscribed topics on the publishing
+      broker. Sent whenever the list changes(subscribe/unsubscribe) or a new broker
+      bridge is established.
     payload:
       type: object
       properties:
@@ -70,11 +65,12 @@ events:
           "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
     otherFields:
       changeCount:
-        description: Change count related to topics
+        description: The number of times the topic list has been updated(for tracking
+          latest)
       startTime:
         description: Broker start time (as seconds from epoch)
   "/mcafee/event/dxl/brokerregistry/topicadded":
-    description: Broker event sent when a new topic is added.
+    description: Event sent when a new topic is subscribed to on the broker.
     payload:
       type: object
       properties:
@@ -85,11 +81,13 @@ events:
         topic: "/isecg/sample/basicservice"
     otherFields:
       changeCount:
-        description: Change count related to topics
+        description: The number of times the topic list has been updated(for tracking
+          latest)
       startTime:
         description: Broker start time (as seconds from epoch)
   "/mcafee/event/dxl/brokerregistry/topicremoved":
-    description: Broker event sent when a topic is removed from the broker registry.
+    description: Event sent when a broker no longer has any clients subscribed to
+      a topic.
     payload:
       type: object
       properties:
@@ -100,11 +98,13 @@ events:
         topic: "/isecg/sample/basicservice"
     otherFields:
       changeCount:
-        description: Change count related to topics
+        description: The number of times the topic list has been updated(for tracking
+          latest)
       startTime:
         description: Broker start time (as seconds from epoch)
   "/mcafee/event/dxl/clientregistry/connect":
-    description: Broker event sent when a client connects.
+    description: Event sent when a client connects. Only sent if the sendConnectEvents
+      broker property is set to true.
     payload:
       type: object
       properties:
@@ -114,7 +114,8 @@ events:
       example:
         clientGuid: "{12345678-abcd-1234-abcd-123456789abc}"
   "/mcafee/event/dxl/clientregistry/disconnect":
-    description: Broker event sent when a client disconnects.
+    description: Event sent when a client disconnects. Only sent if the sendConnectEvents
+      broker property is set to true.
     payload:
       type: object
       properties:
@@ -123,34 +124,15 @@ events:
           type: string
       example:
         clientGuid: "{e834986f-4e14-44d9-979a-acc35512c894}"
-  "/mcafee/event/dxl/dumpbrokerstate":
-    description: Event used to trigger broker state dumps to the broker's local storage.
-      (Empty payload)
-    payload:
-      example: {}
-  "/mcafee/event/dxl/dumpservicestate":
-    description: Event used to trigger services state dumps to the broker's local
-      storage. (Empty payload)
-    payload:
-      example: {}
-  "/mcafee/event/dxl/eventsubscribernotfound":
-    description: Used to notify subscribers that no subscriber was found for the given
-      topic.
-    payload:
-      type: object
-      properties:
-        topic:
-          description: Topic
-          type: string
-      example:
-        topic: "/mcafee/service/sample/file/request"
   "/mcafee/event/dxl/fabricchange":
-    description: Event sent to notify subscribers of a change in the DXL fabric. (Empty
-      payload)
+    description: Event sent to notify subscribers of a change in the DXL fabric(connection,
+      disconnection, etc.). Brokers that receive this event will send a broker state
+      event.
     payload:
       example: {}
   "/mcafee/event/dxl/revocation/list":
-    description: Event containing a list of revoked certificates.
+    description: Event containing a list of certificates that should be denied access
+      to the fabric.
     payload:
       description: List of certificate data (1 certificate per line)
       type: string
@@ -168,24 +150,10 @@ events:
           type: string
       example:
         serviceGuid: "{3614fef1-635d-456d-82ce-57c165e0b326}"
-  "/mcafee/event/dxl/tenant/limit/exceeded":
-    description: Event notifying subscribers that a given tenant has exceeded the
-      byte limit.
-    payload:
-      type: object
-      properties:
-        clientTenantGuid:
-          description: Identifier of the tenant that exceeded the limit
-          type: string
-      example:
-        clientTenantGuid: "{0f41d474-95d7-11e8-1a8f-00155d842e2d}"
-  "/mcafee/event/dxl/tenant/limit/reset":
-    description: Sent when the tenant byte limit has been reset. (Empty payload)
-    payload:
-      example: {}
 requests:
   "/mcafee/service/dxl/broker/health":
-    description: Request for broker health information. (Empty request payload)
+    description: Request for broker health information. Each broker will send a DXL
+      response to this request separately with their current health status.
     payload:
       example: {}
     response:
@@ -289,7 +257,8 @@ requests:
         example:
           count: 0
   "/mcafee/service/dxl/brokerregistry/query":
-    description: Queries the broker registry for broker details.
+    description: Queries the broker registry for broker state information. If no broker
+      is specified returns the current state of all brokers.
     payload:
       type: object
       properties:
@@ -323,37 +292,10 @@ requests:
               topicRouting: true
               ttlMins: 60
               version: 5.0.0.289
-  "/mcafee/service/dxl/brokerregistry/topicquery":
-    description: Queries the broker for the number of subscribers for a given set
-      of topics.
-    payload:
-      type: object
-      properties:
-        brokerGuid:
-          type: string
-        topics:
-          "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
-      example:
-        brokerGuid: "{0f41d474-95d7-11e8-1a8f-00155d842e2d}"
-        topics:
-        - "/my/topic/1"
-        - "/my/topic/2"
-    response:
-      payload:
-        type: object
-        properties:
-          count:
-            description: Broker topic count
-            type: integer
-          exists:
-            description: Indicator for if broker has the request topics
-            type: boolean
-        example:
-          count: 22
-          exists: true
   "/mcafee/service/dxl/clientregistry/query":
-    description: Queries the client registry for information on the client with the
-      provided clientGuid.
+    description: Queries all brokers to determine if the specified client GUID is
+      connected. This request will reach all brokers on the fabric unless the destinationBrokerGuids
+      in the message are specified.
     payload:
       type: object
       required:
@@ -366,12 +308,12 @@ requests:
     response:
       description: If no client is connected for the supplied clientGuid, no response
         is returned. If a client is connected for the supplied clientGuid, an empty
-        response is returned. (Empty response payload)
+        response is returned from the broker that is currently connected to the client.
       payload:
         example: {}
   "/mcafee/service/dxl/svcregistry/query":
-    description: Queries the information for all services matching the given serviceType
-      and serviceGuid.
+    description: Queries the Service Registry for all services matching the given
+      serviceType or serviceGuid.
     payload:
       type: object
       properties:
@@ -419,7 +361,9 @@ requests:
               ttlMins: 60
               unauthorizedChannels: []
   "/mcafee/service/dxl/svcregistry/register":
-    description: 'Service registry: register'
+    description: Registers a service with the Service Registry. This is called both
+      at initial registration and re-registration before the specified ttlMins is
+      reached.
     payload:
       "$ref": "#/definitions/ServiceRegistryRegisterEvent"
       example:
@@ -436,7 +380,7 @@ requests:
         type: string
         example: ''
   "/mcafee/service/dxl/svcregistry/unregister":
-    description: 'Service registry: unregister'
+    description: Unregisters a service with the Service Registry
     payload:
       type: object
       properties:
@@ -454,10 +398,10 @@ definitions:
     type: object
     properties:
       bridgeChildren:
-        description: Broker's child connections
+        description: Broker parents
         "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       bridges:
-        description: Broker's connections
+        description: All current Broker bridges
         "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       connectionLimit:
         description: Broker connection limit
@@ -490,7 +434,7 @@ definitions:
         description: Broker start time (as seconds from epoch)
         type: integer
       topicRouting:
-        description: Whether topic routing is enabled
+        description: Whether topic-based routing is enabled
         type: boolean
       ttlMins:
         description: Broker Time to Live (in minutes)
@@ -543,7 +487,7 @@ definitions:
         description: Broker GUID
         type: string
       certificates:
-        description: Service metadata
+        description: Certificates of the client that registered this service
         "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       clientGuid:
         description: Client GUID
@@ -575,7 +519,7 @@ definitions:
         description: Service GUID
         type: string
       targetTenantGuids:
-        description: Target tenant GUIDs
+        description: GUIDs of tenants that can access this service
         "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       ttlMins:
         description: Service Time to Live (in minutes)
