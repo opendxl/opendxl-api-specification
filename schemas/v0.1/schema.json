@@ -108,6 +108,16 @@
       "allOf": [
         {
           "$ref": "#/definitions/message"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "isIncoming": {
+              "type": "boolean",
+              "description": "Whether this event is received (incoming) or sent by the solution.",
+              "default": false
+            }
+          }
         }
       ]
     },
