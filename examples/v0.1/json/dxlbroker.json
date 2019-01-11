@@ -33,7 +33,7 @@
     }
   },
   "services": {
-    "DXL Broker Pseudo-Service": {
+    "DXL Broker Service": {
       "info": {
         "title": "Supported Service Requests",
         "version": "0.1",
@@ -166,15 +166,15 @@
       }
     },
     "/mcafee/event/dxl/dumpbrokerstate": {
-      "description": "Event used to trigger broker state dumps to the broker's local storage.",
+      "description": "Event used to trigger broker state dumps to the broker's local storage. (Empty payload)",
       "payload": {
-        "$ref": "#/definitions/EmptyPayload"
+        "example": {}
       }
     },
     "/mcafee/event/dxl/dumpservicestate": {
-      "description": "Event used to trigger services state dumps to the broker's local storage.",
+      "description": "Event used to trigger services state dumps to the broker's local storage. (Empty payload)",
       "payload": {
-        "$ref": "#/definitions/EmptyPayload"
+        "example": {}
       }
     },
     "/mcafee/event/dxl/eventsubscribernotfound": {
@@ -193,9 +193,9 @@
       }
     },
     "/mcafee/event/dxl/fabricchange": {
-      "description": "Event sent to notify subscribers of a change in the DXL fabric.",
+      "description": "Event sent to notify subscribers of a change in the DXL fabric. (Empty payload)",
       "payload": {
-        "$ref": "#/definitions/EmptyPayload"
+        "example": {}
       }
     },
     "/mcafee/event/dxl/revocation/list": {
@@ -242,17 +242,17 @@
       }
     },
     "/mcafee/event/dxl/tenant/limit/reset": {
-      "description": "Sent when the tenant byte limit has been reset.",
+      "description": "Sent when the tenant byte limit has been reset. (Empty payload)",
       "payload": {
-        "$ref": "#/definitions/EmptyPayload"
+        "example": {}
       }
     }
   },
   "requests": {
     "/mcafee/service/dxl/broker/health": {
-      "description": "Request for broker health information.",
+      "description": "Request for broker health information. (Empty request payload)",
       "payload": {
-        "$ref": "#/definitions/EmptyPayload"
+        "example": {}
       },
       "response": {
         "payload": {
@@ -303,8 +303,54 @@
             "connectedClients": 5,
             "incomingMessages": 0.01666666753590107,
             "ipe": {
-              "fabrics": {},
-              "patterns": {},
+              "fabrics": {
+                "ipeSample": {
+                  "displayName": "IPE Sample",
+                  "properties": {
+                    "dxl.ipe.property.sampleMessageCount": {
+                      "displayName": "Sample Message Count",
+                      "type": "numeric",
+                      "value": "1816"
+                    },
+                    "dxl.ipe.property.sampleMessageSize": {
+                      "displayName": "Sample Message Size (Bytes)",
+                      "type": "numeric",
+                      "value": "66772"
+                    }
+                  }
+                },
+                "localExample": {
+                  "displayName": "Local Example IPE",
+                  "properties": {
+                    "dxl.ipe.property.localSuccessCount": {
+                      "displayName": "Local success count",
+                      "type": "numeric",
+                      "value": "5197"
+                    }
+                  }
+                }
+              },
+              "patterns": {
+                "localExample.reactionResultErrors": {
+                  "displayName": "Local Reaction Errors Pattern",
+                  "properties": {}
+                },
+                "localExample.syncData": {
+                  "displayName": "Local Sync Data Pattern",
+                  "properties": {
+                    "dxl.ipe.property.localMessagesLastTime": {
+                      "displayName": "Last local message time",
+                      "type": "date",
+                      "value": "1546971467079"
+                    },
+                    "dxl.ipe.property.localMessagesProcessed": {
+                      "displayName": "Local messages processed",
+                      "type": "numeric",
+                      "value": "4634"
+                    }
+                  }
+                }
+              },
               "plugins": {
                 "epo": {
                   "displayName": "epo",
@@ -454,9 +500,9 @@
         }
       },
       "response": {
-        "description": "If no client is connected for the supplied clientGuid, no response is returned. If a client is connected for the supplied clientGuid, an empty response is returned.",
+        "description": "If no client is connected for the supplied clientGuid, no response is returned. If a client is connected for the supplied clientGuid, an empty response is returned. (Empty response payload)",
         "payload": {
-          "$ref": "#/definitions/EmptyPayload"
+          "example": {}
         }
       }
     },
@@ -669,16 +715,6 @@
             "$ref": "#/definitions/IpeHealthPayloadProperties"
           }
         }
-      },
-      "example": {
-        "displayName": "IPE Sample",
-        "properties": {
-          "dxl.ipe.property.sampleMessageCount": {
-            "displayName": "Sample Message Count",
-            "type": "numeric",
-            "value": "1816"
-          }
-        }
       }
     },
     "IpeHealthPayloadProperties": {
@@ -701,15 +737,6 @@
                 "description": "The data type of the property."
               }
             }
-          }
-        }
-      },
-      "example": {
-        "properties": {
-          "dxl.ipe.property.sampleMessageCount": {
-            "displayName": "Sample Message Count",
-            "type": "numeric",
-            "value": "1816"
           }
         }
       }
@@ -792,11 +819,6 @@
         "serviceType": "/mcafee/service/sample",
         "ttlMins": 60
       }
-    },
-    "EmptyPayload": {
-      "type": "object",
-      "properties": {},
-      "example": {}
     }
   }
 }

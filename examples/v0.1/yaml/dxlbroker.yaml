@@ -27,7 +27,7 @@ solutions:
     - "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1exceeded"
     - "$ref": "#/events/~1mcafee~1event~1dxl~1tenant~1limit~1reset"
 services:
-  DXL Broker Pseudo-Service:
+  DXL Broker Service:
     info:
       title: Supported Service Requests
       version: '0.1'
@@ -125,13 +125,14 @@ events:
         clientGuid: "{e834986f-4e14-44d9-979a-acc35512c894}"
   "/mcafee/event/dxl/dumpbrokerstate":
     description: Event used to trigger broker state dumps to the broker's local storage.
+      (Empty payload)
     payload:
-      "$ref": "#/definitions/EmptyPayload"
+      example: {}
   "/mcafee/event/dxl/dumpservicestate":
     description: Event used to trigger services state dumps to the broker's local
-      storage.
+      storage. (Empty payload)
     payload:
-      "$ref": "#/definitions/EmptyPayload"
+      example: {}
   "/mcafee/event/dxl/eventsubscribernotfound":
     description: Used to notify subscribers that no subscriber was found for the given
       topic.
@@ -144,9 +145,10 @@ events:
       example:
         topic: "/mcafee/service/sample/file/request"
   "/mcafee/event/dxl/fabricchange":
-    description: Event sent to notify subscribers of a change in the DXL fabric.
+    description: Event sent to notify subscribers of a change in the DXL fabric. (Empty
+      payload)
     payload:
-      "$ref": "#/definitions/EmptyPayload"
+      example: {}
   "/mcafee/event/dxl/revocation/list":
     description: Event containing a list of revoked certificates.
     payload:
@@ -178,14 +180,14 @@ events:
       example:
         clientTenantGuid: "{0f41d474-95d7-11e8-1a8f-00155d842e2d}"
   "/mcafee/event/dxl/tenant/limit/reset":
-    description: Sent when the tenant byte limit has been reset.
+    description: Sent when the tenant byte limit has been reset. (Empty payload)
     payload:
-      "$ref": "#/definitions/EmptyPayload"
+      example: {}
 requests:
   "/mcafee/service/dxl/broker/health":
-    description: Request for broker health information.
+    description: Request for broker health information. (Empty request payload)
     payload:
-      "$ref": "#/definitions/EmptyPayload"
+      example: {}
     response:
       payload:
         type: object
@@ -223,8 +225,40 @@ requests:
           connectedClients: 5
           incomingMessages: 0.01666666753590107
           ipe:
-            fabrics: {}
-            patterns: {}
+            fabrics:
+              ipeSample:
+                displayName: IPE Sample
+                properties:
+                  dxl.ipe.property.sampleMessageCount:
+                    displayName: Sample Message Count
+                    type: numeric
+                    value: '1816'
+                  dxl.ipe.property.sampleMessageSize:
+                    displayName: Sample Message Size (Bytes)
+                    type: numeric
+                    value: '66772'
+              localExample:
+                displayName: Local Example IPE
+                properties:
+                  dxl.ipe.property.localSuccessCount:
+                    displayName: Local success count
+                    type: numeric
+                    value: '5197'
+            patterns:
+              localExample.reactionResultErrors:
+                displayName: Local Reaction Errors Pattern
+                properties: {}
+              localExample.syncData:
+                displayName: Local Sync Data Pattern
+                properties:
+                  dxl.ipe.property.localMessagesLastTime:
+                    displayName: Last local message time
+                    type: date
+                    value: '1546971467079'
+                  dxl.ipe.property.localMessagesProcessed:
+                    displayName: Local messages processed
+                    type: numeric
+                    value: '4634'
             plugins:
               epo:
                 displayName: epo
@@ -332,9 +366,9 @@ requests:
     response:
       description: If no client is connected for the supplied clientGuid, no response
         is returned. If a client is connected for the supplied clientGuid, an empty
-        response is returned.
+        response is returned. (Empty response payload)
       payload:
-        "$ref": "#/definitions/EmptyPayload"
+        example: {}
   "/mcafee/service/dxl/svcregistry/query":
     description: Queries the information for all services matching the given serviceType
       and serviceGuid.
@@ -486,13 +520,6 @@ definitions:
           description: The display name of the IPE object (fabric, pattern, or object).
         properties:
           "$ref": "#/definitions/IpeHealthPayloadProperties"
-    example:
-      displayName: IPE Sample
-      properties:
-        dxl.ipe.property.sampleMessageCount:
-          displayName: Sample Message Count
-          type: numeric
-          value: '1816'
   IpeHealthPayloadProperties:
     type: object
     additionalProperties:
@@ -509,12 +536,6 @@ definitions:
             type:
               type: string
               description: The data type of the property.
-    example:
-      properties:
-        dxl.ipe.property.sampleMessageCount:
-          displayName: Sample Message Count
-          type: numeric
-          value: '1816'
   ServiceRegistryRegisterEvent:
     type: object
     properties:
@@ -575,7 +596,3 @@ definitions:
       serviceGuid: "{d57f495c-7bed-4170-9970-61d10914335a}"
       serviceType: "/mcafee/service/sample"
       ttlMins: 60
-  EmptyPayload:
-    type: object
-    properties: {}
-    example: {}
