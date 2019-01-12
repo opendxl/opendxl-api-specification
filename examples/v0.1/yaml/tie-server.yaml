@@ -171,7 +171,7 @@ definitions:
         $ref: '#/definitions/Update Time Object'
       relationships:
         type: object
-        description: "\tIf present this field indicates that there are relevant relationships for this file. Currently the only relevant relationship is the signing certificate. If absent then this means that the file does not have any relevant relationships at the time of the reputation change."
+        description: "If present this field indicates that there are relevant relationships for this file. Currently the only relevant relationship is the signing certificate. If absent then this means that the file does not have any relevant relationships at the time of the reputation change."
         properties:
           certificate:
             type: object
@@ -480,7 +480,7 @@ definitions:
     properties:
       sinceTime:
         type: integer
-        description: "\tThe timestamp (epoch time - in seconds) to retrieve changed reputations from. It is strongly recommended that this is set to the value returned in the serverTime property of the response to the latest reputation request. Note that both File and Certificate reputation requests will return the server time in the response."
+        description: "The timestamp (epoch time - in seconds) to retrieve changed reputations from. It is strongly recommended that this is set to the value returned in the serverTime property of the response to the latest reputation request. Note that both File and Certificate reputation requests will return the server time in the response."
       queryLimit:
         type: integer
         description: 'The max number of reputations to return (Allowed values: 1-5000). If omitted this defaults to a configurable parameter by server or 100 if the server parameter is unconfigured.'

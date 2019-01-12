@@ -47,13 +47,13 @@
   },
   "events": {
     "/mcafee/event/dxl/brokerregistry/brokerstate": {
-      "description": "Event containing the current state of a broker. Sent whenever the broker state changes(connections, disconnections, etc.).",
+      "description": "Event containing the current state of a broker. Sent whenever the broker state changes (connections, disconnections, etc.).",
       "payload": {
         "$ref": "#/definitions/BrokerStateEvent"
       }
     },
     "/mcafee/event/dxl/brokerregistry/brokerstatetopics": {
-      "description": "Event containing all of the currently subscribed topics on the publishing broker. Sent whenever the list changes(subscribe/unsubscribe) or a new broker bridge is established.",
+      "description": "Event containing all of the currently subscribed topics on the publishing broker. Sent whenever the list changes (subscribe/unsubscribe) or a new broker bridge is established.",
       "payload": {
         "type": "object",
         "properties": {
@@ -74,11 +74,19 @@
             "description": "Topics",
             "$ref": "https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray"
           }
+        },
+        "example": {
+          "state": 3,
+          "index": 0,
+          "topics": [
+            "/opendxl/service/sample/message",
+            "/opendxl/service/sample/stats/report"
+          ]
         }
       },
       "otherFields": {
         "changeCount": {
-          "description": "The number of times the topic list has been updated(for tracking latest)"
+          "description": "The number of times the topic list has been updated (for tracking latest)"
         },
         "startTime": {
           "description": "Broker start time (as seconds from epoch)"
@@ -101,7 +109,7 @@
       },
       "otherFields": {
         "changeCount": {
-          "description": "The number of times the topic list has been updated(for tracking latest)"
+          "description": "The number of times the topic list has been updated (for tracking latest)"
         },
         "startTime": {
           "description": "Broker start time (as seconds from epoch)"
@@ -124,7 +132,7 @@
       },
       "otherFields": {
         "changeCount": {
-          "description": "The number of times the topic list has been updated(for tracking latest)"
+          "description": "The number of times the topic list has been updated (for tracking latest)"
         },
         "startTime": {
           "description": "Broker start time (as seconds from epoch)"
@@ -162,7 +170,7 @@
       }
     },
     "/mcafee/event/dxl/fabricchange": {
-      "description": "Event sent to notify subscribers of a change in the DXL fabric(connection, disconnection, etc.). Brokers that receive this event will send a broker state event.",
+      "description": "Event sent to notify subscribers of a change in the DXL fabric (connection, disconnection, etc.). Brokers that receive this event will send a broker state event.",
       "payload": {
         "example": {}
       }
@@ -505,8 +513,7 @@
       },
       "response": {
         "payload": {
-          "type": "string",
-          "example": ""
+          "example": {}
         }
       }
     },
@@ -526,8 +533,7 @@
       },
       "response": {
         "payload": {
-          "type": "string",
-          "example": ""
+          "example": {}
         }
       }
     }

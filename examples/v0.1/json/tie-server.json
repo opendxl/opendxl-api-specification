@@ -298,7 +298,7 @@
         },
         "relationships": {
           "type": "object",
-          "description": "	If present this field indicates that there are relevant relationships for this file. Currently the only relevant relationship is the signing certificate. If absent then this means that the file does not have any relevant relationships at the time of the reputation change.",
+          "description": "If present this field indicates that there are relevant relationships for this file. Currently the only relevant relationship is the signing certificate. If absent then this means that the file does not have any relevant relationships at the time of the reputation change.",
           "properties": {
             "certificate": {
               "type": "object",
@@ -805,7 +805,7 @@
       "properties": {
         "sinceTime": {
           "type": "integer",
-          "description": "	The timestamp (epoch time - in seconds) to retrieve changed reputations from. It is strongly recommended that this is set to the value returned in the serverTime property of the response to the latest reputation request. Note that both File and Certificate reputation requests will return the server time in the response."
+          "description": "The timestamp (epoch time - in seconds) to retrieve changed reputations from. It is strongly recommended that this is set to the value returned in the serverTime property of the response to the latest reputation request. Note that both File and Certificate reputation requests will return the server time in the response."
         },
         "queryLimit": {
           "type": "integer",

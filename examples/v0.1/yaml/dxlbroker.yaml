@@ -40,12 +40,12 @@ services:
 events:
   "/mcafee/event/dxl/brokerregistry/brokerstate":
     description: Event containing the current state of a broker. Sent whenever the
-      broker state changes(connections, disconnections, etc.).
+      broker state changes (connections, disconnections, etc.).
     payload:
       "$ref": "#/definitions/BrokerStateEvent"
   "/mcafee/event/dxl/brokerregistry/brokerstatetopics":
     description: Event containing all of the currently subscribed topics on the publishing
-      broker. Sent whenever the list changes(subscribe/unsubscribe) or a new broker
+      broker. Sent whenever the list changes (subscribe/unsubscribe) or a new broker
       bridge is established.
     payload:
       type: object
@@ -63,9 +63,15 @@ events:
         topics:
           description: Topics
           "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
+      example:
+        state: 3
+        index: 0
+        topics:
+        - "/opendxl/service/sample/message"
+        - "/opendxl/service/sample/stats/report"
     otherFields:
       changeCount:
-        description: The number of times the topic list has been updated(for tracking
+        description: The number of times the topic list has been updated (for tracking
           latest)
       startTime:
         description: Broker start time (as seconds from epoch)
@@ -81,7 +87,7 @@ events:
         topic: "/isecg/sample/basicservice"
     otherFields:
       changeCount:
-        description: The number of times the topic list has been updated(for tracking
+        description: The number of times the topic list has been updated (for tracking
           latest)
       startTime:
         description: Broker start time (as seconds from epoch)
@@ -98,7 +104,7 @@ events:
         topic: "/isecg/sample/basicservice"
     otherFields:
       changeCount:
-        description: The number of times the topic list has been updated(for tracking
+        description: The number of times the topic list has been updated (for tracking
           latest)
       startTime:
         description: Broker start time (as seconds from epoch)
@@ -125,7 +131,7 @@ events:
       example:
         clientGuid: "{e834986f-4e14-44d9-979a-acc35512c894}"
   "/mcafee/event/dxl/fabricchange":
-    description: Event sent to notify subscribers of a change in the DXL fabric(connection,
+    description: Event sent to notify subscribers of a change in the DXL fabric (connection,
       disconnection, etc.). Brokers that receive this event will send a broker state
       event.
     payload:
@@ -377,8 +383,7 @@ requests:
         ttlMins: 60
     response:
       payload:
-        type: string
-        example: ''
+        example: {}
   "/mcafee/service/dxl/svcregistry/unregister":
     description: Unregisters a service with the Service Registry
     payload:
@@ -391,8 +396,7 @@ requests:
         serviceGuid: "{3614fef1-635d-456d-82ce-57c165e0b326}"
     response:
       payload:
-        type: string
-        example: ''
+        example: {}
 definitions:
   BrokerStateEvent:
     type: object
