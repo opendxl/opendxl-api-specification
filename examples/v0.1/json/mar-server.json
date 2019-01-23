@@ -1,0 +1,854 @@
+{
+  "openDxlApi": "0.1",
+  "info": {
+    "title": "McAfee Active Response (MAR)",
+    "version": "0.1",
+    "description": "McAfee® Active Response is an endpoint detection and response tool that finds and responds to advanced threats.",
+    "contact": {
+      "url": "https://www.mcafee.com/"
+    }
+  },
+
+
+  "solutions": {
+    "MAR Server": {
+      "info": {
+        "title": "MAR Server",
+        "version": "2.3.0"
+      },
+      "externalDocs": {
+        "url": "https://www.mcafee.com/enterprise/en-us/products/active-response.html"
+      },
+      "services": [
+        {
+          "$ref": "#/services/McAfee MAR Service"
+        }
+      ],
+      "events": []
+    }
+  },
+
+
+  "services": {
+    "McAfee MAR Service": {
+      "info": {
+        "title": "McAfee MAR Service",
+        "version": "2.3.0",
+        "description": "DXL service hosted by the McAfee MAR Server. The MAR Search topic operates similarly to a RESTful API, and supports multiple request formats. As such, the definition of the Request/Response supported by '/mcafee/mar/service/api/search' is split into several subsections."
+      },
+      "requests": [
+        {
+          "$ref": "#/requests/~1mcafee~1mar~1service~1api~1search - Create Search"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1mar~1service~1api~1search - Start Search"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1mar~1service~1api~1search - Search Status"
+        },
+        {
+          "$ref": "#/requests/~1mcafee~1mar~1service~1api~1search - Search Results"
+        }
+      ],
+      "metadata": {}
+    }
+  },
+
+  "requests": {
+    "/mcafee/mar/service/api/search - Create Search": {
+      "description": "Notifies the MAR server to create a new search using a specified set of parameters. After creation the search ID provided in the response can be used to start an instance of the search using a 'Start Search'-formatted request on this same DXL topic or through the MAR UI. Creation of a MAR search requires a list of 'projections' and an optional dictionary containing the search 'conditions'.",
+      "externalDocs": {
+        "description": "McAfee Active Response 2.3.0 Product Guide - Search Syntax",
+        "url": "https://kc.mcafee.com/resources/sites/MCAFEE/content/live/PRODUCT_DOCUMENTATION/27000/PD27433/en_US/mar_230_pg_0-00_en-us.pdf#page=23"
+      },
+      "payload": {
+        "$ref": "#/definitions/Active Response Create Search Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/Active Response Create Search Response Payload"
+        }
+      }
+    },
+    "/mcafee/mar/service/api/search - Start Search": {
+      "description": "Notifies the MAR server to start a previously-created search (created by a 'Create-Search'-formatted request on this same DXL topic or using the MAR UI). The results of this search must be retrieved at a later time using a 'Search Results'-formatted request on this same DXL topic. To check the status of the search, use a 'Search Status'-formatted request on this same DXL topic.",
+      "payload": {
+        "$ref": "#/definitions/Active Response Start Search Request Payload"
+      },
+      "response": {
+        "payload": {
+          "$ref": "#/definitions/Active Response Start Search Response Payload"
+        }
+      }
+    },
+    "/mcafee/mar/service/api/search - Search Status": {
+      "description": "Retrieves the status of a previously-started search.",
+      "payload": {
+        "$ref": "#/definitions/Active Response Search Status Request Payload"
+      },
+      "response": {
+        "description": "The response contains the current search status, including the number of unique results for the search, the number of errors reported by endpoints, the number of responding hosts, the number of hosts that were present on the DXL fabric when the search began, and the status of the search execution.",
+        "payload": {
+          "$ref": "#/definitions/Active Response Search Status Response Payload"
+        }
+      }
+    },
+    "/mcafee/mar/service/api/search - Search Results": {
+      "description": "Retrieves the results of a completed search. Results can be filtered by specifying the desired output ",
+      "externalDocs": {
+        "description": "McAfee Active Response 2.3.0 Product Guide - Collecting Endpoint Data",
+        "url": "https://kc.mcafee.com/resources/sites/MCAFEE/content/live/PRODUCT_DOCUMENTATION/27000/PD27433/en_US/mar_230_pg_0-00_en-us.pdf#page=25"
+      },
+      "payload": {
+        "$ref": "#/definitions/Active Response Search Results Request Payload"
+      },
+      "response": {
+        "description": "Each search result has the following fields: 'id', 'count', 'created_at', 'output'. The output is in the form of a dictionary, where the key is '<CollectorName>|<OutputName>' and the value corresponds to those identifiers.",
+        "payload": {
+          "$ref": "#/definitions/Active Response Search Results Response Payload"
+        }
+      }
+    }
+  },
+
+
+  "definitions": {
+    "Active Response Create Search Request Payload": {
+      "externalDocs": {
+        "description": "McAfee Active Response 2.3.0 Product Guide - Search Syntax",
+        "url": "https://kc.mcafee.com/resources/sites/MCAFEE/content/live/PRODUCT_DOCUMENTATION/27000/PD27433/en_US/mar_230_pg_0-00_en-us.pdf#page=23"
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/General Request Objects"
+        },
+        {
+          "properties": {
+            "body": {
+              "properties": {
+                "condition": {
+                  "$ref": "#/definitions/Or Condition Object"
+                },
+                "projections": {
+                  "$ref": "#/definitions/Projections Object"
+                }
+              }
+            }
+          },
+          "example": {
+            "target": "/v1/simple",
+            "method": "POST",
+            "parameters": {},
+            "body": {
+              "projections": [
+                {
+                  "name": "Processes",
+                  "outputs": [
+                    "name",
+                    "id"
+                  ]
+                }
+              ],
+              "condition": {
+                "or": [
+                  {
+                    "and": [
+                      {
+                        "name": "Processes",
+                        "output": "name",
+                        "op": "EQUALS",
+                        "value": "csrss"
+                      },
+                      {
+                        "name": "Processes",
+                        "output": "name",
+                        "op": "CONTAINS",
+                        "value": "exe"
+                      }
+                    ]
+                  },
+                  {
+                    "and": [
+                      {
+                        "name": "Processes",
+                        "output": "size",
+                        "op": "GREATER_THAN",
+                        "value": "200",
+                        "negated": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Active Response Create Search Response Payload": {
+      "$ref": "#/definitions/Search Response Object"
+    },
+    "Active Response Start Search Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Search Request Object" },
+        {
+          "example": {
+            "target": "/v1/{searchId}/start",
+            "method": "PUT",
+            "parameters": {
+            },
+            "body": {
+            }
+          }
+        }
+      ]
+    },
+    "Active Response Start Search Response Payload": {
+      "$ref": "#/definitions/Search Response Object"
+    },
+    "Active Response Search Status Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Search Request Object" },
+        {
+          "example": {
+            "target": "/v1/{searchId}/start",
+            "method": "PUT",
+            "parameters": {
+            },
+            "body": {
+            }
+          }
+        }
+      ]
+    },
+    "Active Response Search Status Response Payload": {
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "results": {
+              "type": "integer"
+            },
+            "errors": {
+              "type": "integer"
+            },
+            "hosts": {
+              "type": "integer"
+            },
+            "subscribedHosts": {
+              "type": "integer"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "example": {
+        "code": 200,
+        "body": {
+          "results": 105,
+          "errors": 0,
+          "hosts": 2,
+          "subscribedHosts": 2,
+          "status": "FINISHED"
+        }
+      }
+    },
+    "Active Response Search Results Request Payload": {
+      "allOf": [
+        { "$ref": "#/definitions/Search Request Object" },
+        {
+          "example": {
+            "target": "/v1/{searchId}/results",
+            "method": "GET",
+            "parameters": {
+              "$offset": 1,
+              "$limit": 10,
+              "filter": "iexplorer.exe",
+              "sortBy": "count",
+              "sortDirection": "desc"
+            },
+            "body" : {
+            }
+          }
+        }
+      ]
+    },
+    "Active Response Search Results Response Payload": {
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "startIndex": {
+              "type": "integer"
+            },
+            "itemsPerPage": {
+              "type": "integer"
+            },
+            "currentItemCount": {
+              "type": "integer"
+            },
+            "totalItems": {
+              "type": "integer"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Search Response Item Object"
+              }
+            }
+          }
+        }
+      },
+      "example": {
+        "code": 200,
+        "body": {
+          "startIndex": 1,
+          "itemsPerPage": 5,
+          "currentItemCount": 5,
+          "totalItems": 65,
+          "items": [
+            {
+              "id": "(1)ext4-dio-unwrit#_##_##_##_#",
+              "count": 12,
+              "created_at": "2015-07-06T17:53:23.722Z",
+              "output": {
+                "Processes|name": "ext4-dio-unwrit"
+              }
+            },
+            {
+              "id": "(1)System#_##_##_##_#",
+              "count": 10,
+              "created_at": "2015-07-06T17:53:23.722Z",
+              "output": {
+                "Processes|name": "System"
+              }
+            },
+            {
+              "id": "3c79b8b28ea7be20ae86c5dfe934e45b",
+              "count": 10,
+              "created_at": "2015-07-06T17:53:23.722Z",
+              "output": {
+                "Processes|name": "csrss.exe",
+                "Processes|md5": "60C2862B4BF0FD9F582EF344C2B1EC72",
+                "Processes|sha1": "17542707A3D9FA13C569450FD978272EF7070A77",
+                "Processes|cmdline": "%SystemRoot%\\\\system32\\\\csrss.exe",
+                "Processes|imagepath":
+                "C:\\\\Windows\\\\System32\\\\csrss.exe"
+              }
+            },
+            {
+              "id": "(1)[System Process]#_##_##_##_#",
+              "count": 10,
+              "created_at": "2015-07-06T17:53:23.722Z",
+              "output": {
+                "Processes|name": "[System Process]"
+              }
+            },
+            {
+              "id": "39b094a90fbc3e9da49ce60188933dd0",
+              "count": 9,
+              "created_at": "2015-07-06T17:53:23.722Z",
+              "output": {
+                "Processes|name": "udevd",
+                "Processes|md5": "D8757C969BA6682D61BD83047FD88E39",
+                "Processes|sha1": "2DB1894DD68FF9923CB3466FE21EF5C47CCBC3E4",
+                "Processes|cmdline": "/sbin/udevd -d",
+                "Processes|imagepath": "/sbin/udevd"
+              }
+            }
+          ]
+        }
+      }
+    },
+
+    "Search Request Object": {
+      "description": "Object containing relevant information to target a created and/or running search. The 'body' field should be left as an empty object. The 'parameters' object is only required for a subset of the requests formats that use this object.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/General Request Objects"
+        },
+        {
+          "properties": {
+            "body": {
+              "properties": {}
+            }
+          }
+        }
+      ]
+    },
+    "Search Response Object": {
+      "description": "A complete Search object, including the search ID and the current status of the search ('CREATED', 'STARTED', 'IN_PROGRESS', 'FINISHING', or 'FINISHED').",
+      "properties": {
+        "body": {
+          "type": "object",
+          "allOf": [
+            { "$ref": "#/definitions/Base Catalog Properties" },
+            {
+              "properties": {
+                "temporal": {
+                  "type": "boolean"
+                },
+                "aggregated": {
+                  "type": "boolean"
+                },
+                "projections": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "collector": {
+                        "allOf": [
+                          { "$ref": "#/definitions/Base Catalog Properties" },
+                          {
+                            "properties": {
+                              "description": {
+                                "type": "string"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "contents": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "platform": {
+                                      "$ref": "#/definitions/Platform Object"
+                                    },
+                                    "capability": {
+                                      "type": "object",
+                                      "properties": {
+                                        "description": {
+                                          "type": "string"
+                                        },
+                                        "module": {
+                                          "type": "string"
+                                        },
+                                        "function": {
+                                          "type": "string"
+                                        },
+                                        "contentEnabled": {
+                                          "type": "boolean"
+                                        },
+                                        "arguments": {
+                                          "type": "array",
+                                          "items": {}
+                                        },
+                                        "outputs": {
+                                          "type": "array",
+                                          "items": {
+                                            "$ref": "#/definitions/Output Object"
+                                          }
+                                        },
+                                        "formatArgs": {
+                                          "type": "object",
+                                          "properties": {}
+                                        },
+                                        "format": {
+                                          "type": "string"
+                                        },
+                                        "platforms": {
+                                          "type": "array",
+                                          "items": {
+                                            "$ref": "#/definitions/Platform Object"
+                                          }
+                                        },
+                                        "itemType": {
+                                          "type": "string"
+                                        },
+                                        "catalogItems": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      },
+                                      "arguments": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "outputs": {
+                                "type": "array",
+                                "items": {
+                                  "$ref": "#/definitions/Output Object"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "ttl": {
+                  "type": "integer"
+                },
+                "running": {
+                  "type": "boolean"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "executedAt": {
+                  "type": "integer"
+                },
+                "subscribedHosts": {
+                  "type": "integer"
+                }
+              }
+            }
+          ]
+        },
+        "code": {
+          "type": "integer"
+        }
+      },
+      "example": {
+        "body": {
+          "catalogVersion": 1,
+          "dbVersion": 1,
+          "id": "556e1755e4b0922fa5fd6e0c",
+          "name": "search",
+          "temporal": true,
+          "aggregated": true,
+          "projections": [
+            {
+              "collector": {
+                "catalogVersion": 1,
+                "dbVersion": 1,
+                "id": "551c500fe4b0d853c533a8bd",
+                "name": "Processes",
+                "description": "Shows the running processes",
+                "type": "BUILTIN",
+                "contents": [
+                  {
+                    "platform": {
+                      "catalogVersion": 1,
+                      "dbVersion": 1,
+                      "id": "551c500fe4b0d853c533a8b3",
+                      "name": "linux",
+                      "topic": "/mcafee/mar/agent/query/linux"
+                    },
+                    "capability": {
+                      "catalogVersion": 1,
+                      "dbVersion": 1,
+                      "id": "551c500fe4b0d853c533a8b4",
+                      "name": "Running Processes",
+                      "description": "Obtains the list of the running processes",
+                      "module": "SystemInfo",
+                      "function": "CollectProcess",
+                      "contentEnabled": false,
+                      "arguments": [],
+                      "outputs": [
+                        {
+                          "name": "name",
+                          "type": "STRING"
+                        },
+                        {
+                          "name": "id",
+                          "type": "NUMBER"
+                        },
+                        {
+                          "name": "threadCount",
+                          "type": "NUMBER"
+                        },
+                        {
+                          "name": "parentId",
+                          "type": "NUMBER"
+                        },
+                        {
+                          "name": "size",
+                          "type": "NUMBER"
+                        },
+                        {
+                          "name": "md5",
+                          "type": "STRING"
+                        },
+                        {
+                          "name": "sha1",
+                          "type": "STRING"
+                        }
+                      ],
+                      "formatArgs": {
+                      },
+                      "format": "BIN",
+                      "platforms": [
+                        {
+                          "catalogVersion": 1,
+                          "dbVersion": 1,
+                          "id": "551c500fe4b0d853c533a8b2",
+                          "name": "windows",
+                          "topic": "/mcafee/mar/agent/query/windows"
+                        },
+                        {
+                          "catalogVersion": 1,
+                          "dbVersion": 1,
+                          "id": "551c500fe4b0d853c533a8b3",
+                          "name": "linux",
+                          "topic": "/mcafee/mar/agent/query/linux"
+                        }
+                      ],
+                      "itemType": "BUILTIN",
+                      "catalogItems": [
+                        "COLLECTOR"
+                      ]
+                    },
+                    "arguments": []
+                  }
+                ],
+                "outputs": [
+                  {
+                    "name": "name",
+                    "type": "STRING"
+                  },
+                  {
+                    "name": "id",
+                    "type": "NUMBER"
+                  },
+                  {
+                    "name": "threadcount",
+                    "type": "NUMBER"
+                  },
+                  {
+                    "name": "parentid",
+                    "type": "NUMBER"
+                  },
+                  {
+                    "name": "size",
+                    "type": "NUMBER"
+                  },
+                  {
+                    "name": "md5",
+                    "type": "STRING"
+                  },
+                  {
+                    "name": "sha1",
+                    "type": "STRING"
+                  }
+                ]
+              },
+              "sequence": "1",
+              "output": [
+                {
+                  "name": "name",
+                  "type": "STRING"
+                },
+                {
+                  "name": "id",
+                  "type": "NUMBER"
+                }
+              ]
+            }
+          ],
+          "ttl": 15000,
+          "running": false,
+          "status": "CREATED",
+          "createdAt": 1433278293933,
+          "executedAt": 1433278348963,
+          "subscribedHosts": 2
+        }
+      }
+    },
+    "Search Response Item Object": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "output": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Projections Object": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Projection Object"
+      }
+    },
+    "Projection Object": {
+      "type": "object",
+      "description": "Projections are used to describe the information to collect in the search. Each projection consists of a collector name and a list of output names from the collector. For example, the \"Processes\" collector includes output names such as \"name\", \"sha1\", \"md5\", etc. For a complete list of collectors and their associated output names refer to the McAfee Active Response Product Guide.",
+      "externalDocs": {
+        "description": "McAfee Active Response 2.3.0 Product Guide - Logical Operators",
+        "url": "https://kc.mcafee.com/resources/sites/MCAFEE/content/live/PRODUCT_DOCUMENTATION/27000/PD27433/en_US/mar_230_pg_0-00_en-us.pdf#page=24"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the collector to project."
+        },
+        "outputs": {
+          "type": "array",
+          "description": "An array of output names of the collector to project.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "name": "Processes",
+        "outputs": ["name", "id"]
+      }
+    },
+    "Or Condition Object": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "or": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/definitions/And Condition Object" },
+              { "$ref": "#/definitions/Not Condition Object" }
+            ]
+          }
+        }
+      }
+    },
+    "And Condition Object": {
+      "type": "object",
+      "properties": {
+        "and": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Base Condition Object"
+          }
+        }
+      }
+    },
+    "Not Condition Object": {
+      "type": "object",
+      "properties": {
+        "not": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Base Condition Object"
+          }
+        }
+      }
+    },
+    "Base Condition Object": {
+      "type": "object",
+      "description": "Conditions are used to restrict which items are included in the search results. For example, a search that collects process-related information could be limited to those processes which match a specified name. A condition has a fixed structure starting with an 'or' conditional operator and allowing only one level of 'and' conditions.",
+      "externalDocs": {
+        "description": "McAfee Active Response 2.3.0 Product Guide - Logical Operators",
+        "url": "https://kc.mcafee.com/resources/sites/MCAFEE/content/live/PRODUCT_DOCUMENTATION/27000/PD27433/en_US/mar_230_pg_0-00_en-us.pdf#page=24"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the collector from which to retrieve a value for comparison."
+        },
+        "output": {
+          "type": "string",
+          "description": "The output name from the collector that selects the specific value to use for comparison."
+        },
+        "op": {
+          "type": "string",
+          "description": "The comparison operator."
+        },
+        "value": {
+          "type": "string",
+          "description": "The value to compare with the value from the collector."
+        },
+        "negated": {
+          "type": "boolean",
+          "description": "(optional) Indicates if the comparison is negated."
+        }
+      }
+    },
+    "General Request Objects": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "A RESTful-style declaration ('POST', 'GET', etc.) of the type of request being made to the MAR Server. Please see the payload examples of each request format for the correct method to use."
+        },
+        "parameters": {
+          "type": "object",
+          "description": "An object containing additional parameters for the request. In most cases, this will be left as an empty object.",
+          "additionalProperties": {}
+        },
+        "target": {
+          "type": "string",
+          "description": "The MAR API version targeted by this request."
+        }
+      }
+    },
+    "Output Object": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Platform Object": {
+      "type": "object",
+      "properties": {
+        "catalogVersion": {
+          "type": "integer"
+        },
+        "dbVersion": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "topic": {
+          "type": "string"
+        }
+      }
+    },
+    "Base Catalog Properties": {
+      "type": "object",
+      "properties": {
+        "catalogVersion": {
+          "type": "integer"
+        },
+        "dbVersion": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
