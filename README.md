@@ -48,10 +48,6 @@ Current OpenDXL API document examples include:
   Simple example which utilizes each of the major schema components to describe
   an API - solutions, services, requests, and events.
 
-* DXL Broker [[json](examples/v0.1/json/dxlbroker.json)] [[yaml](examples/v0.1/yaml/dxlbroker.yaml)] -
-  Example which describes the API (requests and events) for a
-  [DXL Broker](https://github.com/opendxl/opendxl-broker).
-
 ## LICENSE
 
 Copyright 2018 McAfee, LLC
