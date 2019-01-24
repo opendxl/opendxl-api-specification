@@ -62,7 +62,7 @@ events:
           type: integer
         topics:
           description: Topics
-          "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+          "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       example:
         state: 3
         index: 0
@@ -347,7 +347,7 @@ requests:
                   type: boolean
                 unauthorizedChannels:
                   description: Unauthorized channels for service
-                  "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+                  "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
         example:
           services:
             "{92240a29-2c76-41b2-a3dd-89ef6ff1dcf1}":
@@ -403,10 +403,10 @@ definitions:
     properties:
       bridgeChildren:
         description: Broker parents
-        "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+        "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       bridges:
         description: All current Broker bridges
-        "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+        "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       connectionLimit:
         description: Broker connection limit
         type: integer
@@ -492,7 +492,7 @@ definitions:
         type: string
       certificates:
         description: Certificates of the client that registered this service
-        "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+        "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       clientGuid:
         description: Client GUID
         type: string
@@ -512,7 +512,7 @@ definitions:
         type: boolean
       requestChannels:
         description: Service request channels
-        "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+        "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       registrationTime:
         description: Registration time (as seconds from epoch)
         type: integer
@@ -524,7 +524,7 @@ definitions:
         type: string
       targetTenantGuids:
         description: GUIDs of tenants that can access this service
-        "$ref": https://raw.githubusercontent.com/opendxl/opendxl-api-specification/master/schemas/v0.1/schema.json#/definitions/stringArray
+        "$ref": https://opendxl.github.io/opendxl-api-specification/v0.1/schema.json#/definitions/stringArray
       ttlMins:
         description: Service Time to Live (in minutes)
         type: integer
