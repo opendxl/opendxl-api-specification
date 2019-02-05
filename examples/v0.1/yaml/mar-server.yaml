@@ -95,6 +95,9 @@ definitions:
     - "$ref": "#/definitions/General Request Objects"
     - properties:
         body:
+          description: Object containing the set of projections and conditions used
+            to define the parameters of the search.
+          type: object
           properties:
             condition:
               "$ref": "#/definitions/Or Condition Object"
@@ -188,6 +191,8 @@ definitions:
   Active Response Search Results Response Payload:
     properties:
       code:
+        description: 'Response code. Possible codes match basic HTTP RESTful response
+          codes. (Example: ''200'')'
         type: integer
       body:
         type: object
@@ -253,6 +258,8 @@ definitions:
     - "$ref": "#/definitions/General Request Objects"
     - properties:
         body:
+          description: Empty object.
+          type: object
           properties: {}
   Search Response Object:
     description: A complete Search object, including the search ID and the current
@@ -266,6 +273,8 @@ definitions:
             temporal:
               type: boolean
             aggregated:
+              description: Whether the search results were aggregated from multiple
+                searches.
               type: boolean
             projections:
               type: array
@@ -277,10 +286,15 @@ definitions:
                     - "$ref": "#/definitions/Base Catalog Properties"
                     - properties:
                         description:
+                          description: The description of the collector.
                           type: string
                         type:
+                          description: The type of the collector.
                           type: string
                         contents:
+                          description: There is one content per platform. This can
+                            be used to discover the platforms that a particular collector
+                            supports.
                           type: array
                           items:
                             type: object
@@ -288,6 +302,8 @@ definitions:
                               platform:
                                 "$ref": "#/definitions/Platform Object"
                               capability:
+                                description: Details of the collector, including description,
+                                  output details, collector version, etc.
                                 type: object
                                 properties:
                                   description:
@@ -302,6 +318,7 @@ definitions:
                                     type: array
                                     items: {}
                                   outputs:
+                                    description: The output fields.
                                     type: array
                                     items:
                                       "$ref": "#/definitions/Output Object"
@@ -325,22 +342,32 @@ definitions:
                                   items:
                                     type: object
                         outputs:
+                          description: Name of collector's outputs and their type.
                           type: array
                           items:
                             "$ref": "#/definitions/Output Object"
             ttl:
+              description: The amount of time the search will wait for responses.
               type: integer
             running:
+              description: Whether or not the search is still running.
               type: boolean
             status:
+              description: Status of the search execution.
               type: string
             createdAt:
+              description: The time at which the search was created.
               type: integer
             executedAt:
+              description: the time at which the search was executed.
               type: integer
             subscribedHosts:
+              description: The number of hosts that were present in the DXL fabric
+                when the search started.
               type: integer
       code:
+        description: 'Response code. Possible codes match basic HTTP RESTful response
+          codes. (Example: ''200'')'
         type: integer
     example:
       body:
@@ -438,16 +465,22 @@ definitions:
     type: object
     properties:
       id:
+        description: The identifier of the item within the search results.
         type: string
       count:
+        description: The number of times that the search result was reported.
         type: integer
       created_at:
+        description: The item timestamp.
         type: string
       output:
         type: object
+        description: The search result data where each key is composed of `<CollectorName>|<OutputName>`
+          and the value that correspond to that 'collector' and 'output name'
         additionalProperties:
           type: string
   Projections Object:
+    description: Array of projections.
     type: array
     items:
       "$ref": "#/definitions/Projection Object"
@@ -477,7 +510,9 @@ definitions:
       - id
   Or Condition Object:
     type: object
-    description: ''
+    description: Comparison operator for a MAR search. Returns 'true' if the either
+      of the comparisons included in the condition array return 'true', otherwise
+      returns 'false'.
     properties:
       or:
         type: array
@@ -486,6 +521,9 @@ definitions:
           - "$ref": "#/definitions/And Condition Object"
           - "$ref": "#/definitions/Not Condition Object"
   And Condition Object:
+    description: Comparison operator for a MAR search. Returns 'true' if the both
+      of the comparisons included in the condition array return 'true', otherwise
+      returns 'false'.
     type: object
     properties:
       and:
@@ -493,6 +531,9 @@ definitions:
         items:
           "$ref": "#/definitions/Base Condition Object"
   Not Condition Object:
+    description: Negative comparison operator for a MAR search. Returns 'true' if
+      the comparision presented in the properties of this object are 'false', and
+      vice-versa.
     type: object
     properties:
       not:
@@ -547,30 +588,41 @@ definitions:
     type: object
     properties:
       name:
+        description: Name of the property.
         type: string
       type:
+        description: The property data type.
         type: string
   Platform Object:
     type: object
     properties:
       catalogVersion:
+        description: Catalog version.
         type: integer
       dbVersion:
+        description: Database version.
         type: integer
       id:
+        description: The platform unique ID.
         type: string
       name:
+        description: The platform name.
         type: string
       topic:
+        description: DXL topic.
         type: string
   Base Catalog Properties:
     type: object
     properties:
       catalogVersion:
+        description: The catalog version.
         type: integer
       dbVersion:
+        description: Database version.
         type: integer
       id:
+        description: The property ID.
         type: string
       name:
+        description: The name of the property.
         type: string

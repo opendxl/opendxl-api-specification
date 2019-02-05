@@ -147,6 +147,22 @@
           "$ref": "#/definitions/anvilResponsePayload"
         }
       },
+      "alternateResponses": {
+        "Target Unavailable": {
+          "description": "Target unavailable.",
+          "payload": {
+            "properties": {
+              "targetID": {
+                "description": "Target ID for file data.",
+                "type": "string"
+              },
+              "detailedErrorInfo": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
       "errorResponses": {
         "1": {
           "description": "Unknown target.",

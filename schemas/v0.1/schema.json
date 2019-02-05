@@ -81,6 +81,16 @@
             "response": {
               "$ref": "#/definitions/response"
             },
+            "alternateResponses": {
+              "description": "Map of string identifiers/names to corresponding alternative responses to this request. This is used in cases where a request that matches the provided schema is capable of producing responses with different payload structures depending on the request content or the service's processing.",
+              "type": "object",
+              "patternProperties": {
+                "*": {
+                  "$ref": "#/definitions/response"
+                }
+              },
+              "additionalProperties": false
+            },
             "errorResponses": {
               "description": "Map of integer-based error codes to corresponding 'response' objects. The map describes the possible DXL error response messages which can be returned for a failed request.",
               "type": "object",
